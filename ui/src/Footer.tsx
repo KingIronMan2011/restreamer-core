@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: -1,
 		marginRight: 5,
 	},
+	logo: {},
 	subheader: {
 		color: `${theme.palette.service.main}`,
 		textTransform: 'uppercase',
@@ -546,7 +547,7 @@ Footer.defaultProps = {
 	expand: false,
 	app: '',
 	name: '',
-	version: initVersion(),
+	version: initVersion({}),
 	resources: () => {
 		return null;
 	},

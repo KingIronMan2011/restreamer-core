@@ -120,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const StyledMenu = styled((props) => (
+const StyledMenu = styled((props: React.ComponentProps<typeof Menu>) => (
 	<Menu
 		elevation={0}
 		anchorOrigin={{
@@ -311,8 +311,8 @@ function HeaderMenu(props) {
 					)}
 					{props.showPlayersite === true && (
 						<MenuItem onClick={props.onPlayersite}>
-							<ListItemIcon size="large">
-								<WebIcon fontSize="small" size="large" />
+							<ListItemIcon>
+								<WebIcon fontSize="small" />
 							</ListItemIcon>
 							<Trans>Playersite</Trans>
 						</MenuItem>

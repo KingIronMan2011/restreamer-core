@@ -2,8 +2,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import '@fontsource/dosis';
-import '@fontsource/roboto';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import theme from './theme';

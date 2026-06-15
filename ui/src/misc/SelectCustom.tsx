@@ -18,7 +18,7 @@ function isCustomOption(value, options) {
 }
 
 export default function Component(props) {
-	const [$value, setValue] = React.useState({
+	const [$value, setValue] = React.useState<any>({
 		value: props.value,
 		isCustom: isCustomOption(props.value, props.options),
 		custom:

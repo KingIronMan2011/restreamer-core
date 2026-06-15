@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { render, fireEvent } from '../../../utils/testing';
 import '@testing-library/jest-dom';

@@ -15,7 +15,6 @@ export default function Logo(props) {
 
 	const link = 'https://github.com/datarhei/restreamer';
 
-	 
 	return (
 		<a
 			href={link}

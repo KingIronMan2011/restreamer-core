@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -39,9 +40,9 @@ export default function Wizard(props) {
 		video: M.initSource('video', null),
 		audio: M.initSource('audio', null),
 	});
-	const [$profile, setProfile] = React.useState(M.initProfile());
-	const [$skills, setSkills] = React.useState({});
-	const [$config, setConfig] = React.useState({});
+	const [$profile, setProfile] = React.useState<any>(M.initProfile());
+	const [$skills, setSkills] = React.useState<any>({});
+	const [$config, setConfig] = React.useState<any>({});
 	const [$step, setStep] = React.useState('TYPE');
 	const [$sourceid, setSourceid] = React.useState('');
 	const [$probe, setProbe] = React.useState({

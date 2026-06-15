@@ -6,7 +6,7 @@ import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		color: theme.palette.text.pirmary,
+		color: theme.palette.text.primary,
 		'&.Mui-checked': {
 			color: theme.palette.text.primary,
 		},

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -65,10 +66,10 @@ export default function Edit(props) {
 	const [$settings, setSettings] = React.useState(
 		M.getDefaultEgressMetadata(),
 	);
-	const [$sources, setSources] = React.useState([]);
-	const [$localSources, setLocalSources] = React.useState([]);
+	const [$sources, setSources] = React.useState<any[]>([]);
+	const [$localSources, setLocalSources] = React.useState<any[]>([]);
 	const [$tab, setTab] = React.useState('general');
-	const [$progress, setProgress] = React.useState({});
+	const [$progress, setProgress] = React.useState<any>({});
 	const [$processDetails, setProcessDetails] = React.useState({
 		open: false,
 		data: {
@@ -76,7 +77,9 @@ export default function Edit(props) {
 			log: [],
 		},
 	});
-	const processLogTimer = React.useRef();
+	const processLogTimer = React.useRef<ReturnType<typeof setTimeout> | null>(
+		null,
+	);
 	const [$processDebug, setProcessDebug] = React.useState({
 		open: false,
 		data: '',

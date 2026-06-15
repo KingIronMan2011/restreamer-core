@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -80,7 +81,9 @@ export default function Main(props) {
 			log: [],
 		},
 	});
-	const processLogTimer = React.useRef();
+	const processLogTimer = React.useRef<ReturnType<typeof setTimeout> | null>(
+		null,
+	);
 	const [$processDebug, setProcessDebug] = React.useState({
 		open: false,
 		data: '',

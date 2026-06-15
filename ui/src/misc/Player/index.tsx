@@ -36,9 +36,9 @@ export default function Player(props) {
 						let overlay = null;
 
 						const imgTag = new Image();
-						imgTag.onLoad = function () {
-							imgTag.setAttribute('width', this.width);
-							imgTag.setAttribute('height'.this.height);
+						imgTag.onload = function () {
+							imgTag.setAttribute('width', `${imgTag.width}`);
+							imgTag.setAttribute('height', `${imgTag.height}`);
 						};
 						imgTag.src = props.logo.image + '?' + Math.random();
 

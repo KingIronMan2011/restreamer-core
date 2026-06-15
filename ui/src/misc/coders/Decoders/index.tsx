@@ -19,6 +19,8 @@ import * as VP9CUVID from './video/vp9_cuvid';
 import * as AV1CUVID from './video/av1_cuvid';
 
 class Registry {
+	[key: string]: any;
+
 	constructor(type) {
 		this.type = type;
 		this.services = new Map();

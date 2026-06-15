@@ -6,10 +6,23 @@ import FormHelperText from '@mui/material/FormHelperText';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import type { OutlinedInputProps } from '@mui/material/OutlinedInput';
 
 import Env from './Env';
 
-export default function Component(props) {
+type ComponentProps = Omit<OutlinedInputProps, 'label'> & {
+	env?: boolean;
+	helperText?: React.ReactNode;
+	label?: React.ReactNode;
+	fullWidth?: boolean;
+	max?: string | number;
+	min?: string | number;
+	readOnly?: boolean;
+	step?: string | number;
+	variant?: string;
+};
+
+export default function Component(props: ComponentProps) {
 	const id = props.id === null ? uuidv4() : props.id;
 	let adornment = null;
 
@@ -33,6 +46,13 @@ export default function Component(props) {
 				multiline={props.multiline}
 				rows={props.rows}
 				type={props.type}
+				inputProps={{
+					min: props.min,
+					max: props.max,
+					step: props.step,
+					...(props.inputProps ?? {}),
+				}}
+				readOnly={props.readOnly}
 			/>
 			{props.helperText && (
 				<FormHelperText>{props.helperText}</FormHelperText>

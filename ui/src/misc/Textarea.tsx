@@ -18,7 +18,7 @@ export default function Component(props) {
 	const [$modal, setModal] = React.useState(false);
 
 	const notify = useContext(NotifyContext);
-	const textAreaRef = React.createRef();
+	const textAreaRef = React.createRef<HTMLTextAreaElement>();
 
 	const { content } = props;
 
@@ -115,20 +115,17 @@ export default function Component(props) {
 		allowDownload = false;
 	}
 
-	let textAreaDivStyle = {
+	let textAreaDivStyle: React.CSSProperties = {
 		width: '100%',
 	};
-	let textAreaStyle = {
+	let textAreaStyle: React.CSSProperties = {
 		lineHeight: 1.3,
 		fontSize: 14,
 	};
-	let actionButton = {
+	let actionButton: React.CSSProperties = {
 		float: 'right',
 		padding: '0.5em',
 		backgroundColor: Palette.background.footer1,
-		'&:hover': {
-			backgroundColor: Palette.background.footer2,
-		},
 	};
 	if (props.rows === 1) {
 		textAreaStyle = {

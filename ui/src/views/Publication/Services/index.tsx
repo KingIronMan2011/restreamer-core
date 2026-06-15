@@ -40,6 +40,8 @@ import * as Wettercom from './Wettercom';
 import * as Youtube from './Youtube';
 
 class Registry {
+	[key: string]: any;
+
 	constructor() {
 		this.services = new Map();
 	}

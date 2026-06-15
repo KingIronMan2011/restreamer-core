@@ -41,6 +41,7 @@ import TextField from '../misc/TextField';
 import useInterval from '../hooks/useInterval';
 
 const useStyles = makeStyles((theme) => ({
+	root: {},
 	inlineEnv: {
 		float: 'right',
 	},
@@ -731,7 +732,7 @@ export default function Settings(props) {
 		service: { errors: false, messages: [] },
 	});
 	const [$logdata, setLogdata] = React.useState('');
-	const logTimer = React.useRef();
+	const logTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const [$reloadKey, setReloadKey] = React.useState('');
 	const [$dialogs, setDialogs] = React.useState({
 		restart: false,

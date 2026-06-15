@@ -2,6 +2,11 @@ import React from 'react';
 
 import makeStyles from '@mui/styles/makeStyles';
 import Grid from '@mui/material/Grid';
+import type { ReactNode } from 'react';
+
+type ComponentProps = {
+	children?: ReactNode;
+};
 
 const useStyles = makeStyles((theme) => ({
 	grid: {
@@ -11,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function Component(props) {
+export default function Component(props: ComponentProps) {
 	const classes = useStyles();
 
 	return (

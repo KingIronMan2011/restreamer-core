@@ -8,8 +8,10 @@ let isAvailable = false;
 try {
 	new Auth0Client({
 		domain: 'example.eu.auth0.com',
-		client_id: 'some_client_id',
-		audience: 'https://example.com/',
+		clientId: 'some_client_id',
+		authorizationParams: {
+			audience: 'https://example.com/',
+		},
 		cacheLocation: 'memory',
 	});
 
@@ -78,10 +80,11 @@ const init = () => {
 	try {
 		client = new Auth0Client({
 			domain: config.domain,
-			client_id: config.client_id,
-			audience: config.audience,
+			clientId: config.client_id,
+			authorizationParams: {
+				audience: config.audience,
+			},
 			cacheLocation: 'localstorage',
-			advancedOptions: { defaultScope: 'openid' },
 		});
 	} catch (e) {
 		return false;

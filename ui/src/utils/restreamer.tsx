@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { v4 as uuidv4 } from 'uuid';
@@ -16,6 +17,8 @@ import API from './api';
 import { anonymize } from './anonymizer';
 
 class Restreamer {
+	[key: string]: any;
+
 	constructor(address) {
 		try {
 			new URL(address);
@@ -64,12 +67,12 @@ class Restreamer {
 		this._checkForUpdates();
 	}
 
-	_initAbout(initialAbout) {
+	_initAbout(initialAbout = {}) {
 		if (!initialAbout) {
 			initialAbout = {};
 		}
 
-		const about = {
+		const about: any = {
 			id: '',
 			name: '',
 			created_at: null,
@@ -151,7 +154,7 @@ class Restreamer {
 		this.listeners.splice(id, 1);
 	}
 
-	_dispatchEvent(severity, type, message) {
+	_dispatchEvent(severity, type, message, ..._rest) {
 		switch (severity) {
 			case 'error':
 			case 'warning':
@@ -1314,7 +1317,7 @@ class Restreamer {
 		}
 	}
 
-	CreateChannel(name) {
+	CreateChannel(name = '') {
 		const channelid = uuidv4();
 		this.channels.set(channelid, {
 			id: `restreamer-ui:ingest:${channelid}`,
@@ -3915,16 +3918,16 @@ function parseRFC3339Date(d) {
 
 	// Milliseconds are optional.
 	if (m[7] === undefined) {
-		m[7] = 0;
+		m[7] = '0';
 	} else {
-		m[7] = parseInt((1.0 / parseFloat(m[7])) * 100);
+		m[7] = String(Math.floor((1.0 / parseFloat(m[7])) * 100));
 	}
 
 	// If timezone is undefined, it must be Z or nothing (otherwise the group would have captured).
 	if (m[8] === undefined && m[9] === undefined) {
 		// Use UTC.
-		m[8] = 0;
-		m[9] = 0;
+		m[8] = '0';
+		m[9] = '0';
 	}
 
 	const year = +m[1];

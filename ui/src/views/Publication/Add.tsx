@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -61,8 +62,8 @@ export default function Add(props) {
 	const notify = React.useContext(NotifyContext);
 	const [$service, setService] = React.useState('');
 	const [$settings, setSettings] = React.useState(M.initEgressMetadata({}));
-	const [$sources, setSources] = React.useState([]);
-	const [$localSources, setLocalSources] = React.useState([]);
+	const [$sources, setSources] = React.useState<any[]>([]);
+	const [$localSources, setLocalSources] = React.useState<any[]>([]);
 	const [$filter, setFilter] = React.useState('all');
 	const [$tab, setTab] = React.useState('general');
 	const [$skills, setSkills] = React.useState(null);

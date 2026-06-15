@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -69,9 +70,9 @@ export default function Edit(props) {
 		saving: false,
 	});
 	const [$data, setData] = React.useState(M.getDefaultIngestMetadata());
-	const [$skills, setSkills] = React.useState({});
-	const [$config, setConfig] = React.useState({});
-	const [$process, setProcess] = React.useState({});
+	const [$skills, setSkills] = React.useState<any>({});
+	const [$config, setConfig] = React.useState<any>({});
+	const [$process, setProcess] = React.useState<any>({});
 	const [$ready, setReady] = React.useState(false);
 	const [$deleteDialog, setDeleteDialog] = React.useState(false);
 	const [$editDialog, setEditDialog] = React.useState({

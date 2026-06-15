@@ -175,7 +175,7 @@ function ChannelButton(props, largeChannelList) {
 					<Image
 						style={{
 							width: props.width,
-							height: parseInt((props.width / 16) * 9),
+							height: Math.floor((props.width / 16) * 9),
 						}}
 					>
 						<ImageAlt>

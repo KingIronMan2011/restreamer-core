@@ -41,6 +41,7 @@ import TabsVerticalGrid from '../misc/TabsVerticalGrid';
 import UploadButton from '../misc/UploadButton';
 
 const useStyles = makeStyles((theme) => ({
+	root: {},
 	buttonOpen: {
 		float: 'right',
 		marginLeft: '.5em',
@@ -135,9 +136,9 @@ export default function Playersite(props) {
 	const [$ingest, setIngest] = React.useState(false);
 	const [$available, setAvailable] = React.useState(false);
 	const [$data, setData] = React.useState(M.getDefaultMetadata());
-	const [$settings, setSettings] = React.useState({});
-	const [$channels, setChannels] = React.useState([]);
-	const [$templates, setTemplates] = React.useState([]);
+	const [$settings, setSettings] = React.useState<any>({});
+	const [$channels, setChannels] = React.useState<any[]>([]);
+	const [$templates, setTemplates] = React.useState<any[]>([]);
 	const [$tab, setTab] = React.useState('general');
 	const [$saving, setSaving] = React.useState(false);
 	const [$error, setError] = React.useState({

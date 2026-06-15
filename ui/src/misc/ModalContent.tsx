@@ -10,6 +10,13 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import type { PaperProps } from '@mui/material/Paper';
+
+type ComponentProps = PaperProps & {
+	title?: React.ReactNode;
+	onClose?: (() => void) | null;
+	onHelp?: (() => void) | null;
+};
 
 const useStyles = makeStyles((theme) => ({
 	modalHeader: {
@@ -44,71 +51,75 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Component = React.forwardRef((props, ref) => {
-	const classes = useStyles();
+const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
+	(props, ref) => {
+		const classes = useStyles();
 
-	const { title, onClose, onHelp, ...other } = props;
+		const { title, onClose, onHelp, ...other } = props;
 
-	return (
-		<Paper
-			className={classes.modalPaper}
-			elevation={0}
-			tabIndex={-1}
-			ref={ref}
-			{...other}
-		>
-			<Grid container spacing={0}>
-				<Grid item xs={12} className={classes.modalHeader}>
-					<Stack
-						direction="row"
-						justifyContent="space-between"
-						alignItems="center"
-						spacing={2}
-					>
-						<Typography variant="button">{props.title}</Typography>
+		return (
+			<Paper
+				className={classes.modalPaper}
+				elevation={0}
+				tabIndex={-1}
+				ref={ref}
+				{...other}
+			>
+				<Grid container spacing={0}>
+					<Grid item xs={12} className={classes.modalHeader}>
 						<Stack
 							direction="row"
-							justifyContent="flex-end"
+							justifyContent="space-between"
 							alignItems="center"
 							spacing={2}
 						>
-							{typeof props.onHelp === 'function' && (
-								<IconButton
-									color="inherit"
-									size="small"
-									onClick={props.onHelp}
-								>
-									<HelpIcon fontSize="small" />
-								</IconButton>
-							)}
-							{typeof props.onClose === 'function' && (
-								<IconButton
-									color="inherit"
-									size="small"
-									onClick={props.onClose}
-								>
-									<CloseIcon fontSize="small" />
-								</IconButton>
-							)}
+							<Typography variant="button">
+								{props.title}
+							</Typography>
+							<Stack
+								direction="row"
+								justifyContent="flex-end"
+								alignItems="center"
+								spacing={2}
+							>
+								{typeof props.onHelp === 'function' && (
+									<IconButton
+										color="inherit"
+										size="small"
+										onClick={props.onHelp}
+									>
+										<HelpIcon fontSize="small" />
+									</IconButton>
+								)}
+								{typeof props.onClose === 'function' && (
+									<IconButton
+										color="inherit"
+										size="small"
+										onClick={props.onClose}
+									>
+										<CloseIcon fontSize="small" />
+									</IconButton>
+								)}
+							</Stack>
 						</Stack>
-					</Stack>
+					</Grid>
 				</Grid>
-			</Grid>
-			{props.children}
-			<Grid container spacing={0}>
-				<Grid item xs={12} className={classes.modalFooter}>
-					<Button
-						variant="outlined"
-						color="default"
-						onClick={props.onClose}
-					>
-						<Trans>Close</Trans>
-					</Button>
+				{props.children}
+				<Grid container spacing={0}>
+					<Grid item xs={12} className={classes.modalFooter}>
+						<Button
+							variant="outlined"
+							color="default"
+							onClick={props.onClose}
+						>
+							<Trans>Close</Trans>
+						</Button>
+					</Grid>
 				</Grid>
-			</Grid>
-		</Paper>
-	);
-});
+			</Paper>
+		);
+	},
+);
 
 export default Component;
 

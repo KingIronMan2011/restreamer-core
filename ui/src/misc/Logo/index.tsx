@@ -15,7 +15,6 @@ export default function Logo(props) {
 
 	const link = 'https://datarhei.com';
 
-	 
 	return (
 		<a
 			href={link}

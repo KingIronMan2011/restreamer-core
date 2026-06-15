@@ -39,18 +39,19 @@
 		"videojs-overlay": "^3.1.0"
 	},
 	"scripts": {
-		"start": "vite",
+		"dev": "vite",
 		"build": "vite build",
-		"start-build": "vite preview",
 		"test": "vitest",
-		"test-ci": "vitest run",
-		"test-coverage": "vitest run --coverage",
-		"lint": "eslint src/",
+		"test:ci": "vitest run",
+		"test:coverage": "vitest run --coverage",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
 		"typecheck": "tsc --noEmit",
-		"i18n-extract": "lingui extract",
-		"i18n-extract:clean": "lingui extract --clean",
-		"i18n-compile": "lingui compile",
-		"format": "prettier --write ./src"
+		"i18n:extract": "lingui extract",
+		"i18n:extract:clean": "lingui extract --clean",
+		"i18n:compile": "lingui compile"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.25.2",

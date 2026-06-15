@@ -3,6 +3,16 @@ import React from 'react';
 import makeStyles from '@mui/styles/makeStyles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import type { PaperProps } from '@mui/material/Paper';
+
+type ComponentProps = PaperProps & {
+	marginBottom?: string | number;
+	xs?: number;
+	sm?: number;
+	md?: number;
+	lg?: number;
+	className?: string;
+};
 
 const useStyles = makeStyles((theme) => ({
 	PaperM: {
@@ -18,33 +28,35 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Component = React.forwardRef((props, ref) => {
-	const classes = useStyles();
-	let { marginBottom, xs, sm, md, ld, className, elevation, ...other } =
-		props;
+const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
+	(props, ref) => {
+		const classes = useStyles();
+		let { marginBottom, xs, sm, md, lg, className, elevation, ...other } =
+			props;
 
-	elevation = 0;
+		elevation = 0;
 
-	return (
-		<Grid
-			container
-			justifyContent="center"
-			spacing={1}
-			style={{ marginBottom: props.marginBottom }}
-		>
-			<Grid item xs={props.xs} sm={props.sm} md={props.md} lg={props.lg}>
-				<Paper
-					className={classes[props.className]}
-					elevation={elevation}
-					ref={ref}
-					{...other}
-				>
-					{props.children}
-				</Paper>
+		return (
+			<Grid
+				container
+				justifyContent="center"
+				spacing={1}
+				style={{ marginBottom: marginBottom }}
+			>
+				<Grid item xs={xs} sm={sm} md={md} lg={lg}>
+					<Paper
+						className={classes[className]}
+						elevation={elevation}
+						ref={ref}
+						{...other}
+					>
+						{props.children}
+					</Paper>
+				</Grid>
 			</Grid>
-		</Grid>
-	);
-});
+		);
+	},
+);
 
 export default Component;
 

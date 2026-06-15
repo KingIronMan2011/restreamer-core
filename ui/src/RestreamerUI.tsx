@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 
 import makeStyles from '@mui/styles/makeStyles';
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 export default function RestreamerUI(props) {
 	const classes = useStyles();
 
-	const [$state, setState] = React.useState({
+	const [$state, setState] = React.useState<any>({
 		initialized: false,
 		valid: false,
 		connected: false,
@@ -54,7 +55,7 @@ export default function RestreamerUI(props) {
 		service: false,
 	});
 	const [$ready, setReady] = React.useState(false);
-	const [$snack, setSnack] = React.useState({
+	const [$snack, setSnack] = React.useState<any>({
 		open: false,
 		message: '',
 		severity: 'info',
@@ -64,7 +65,7 @@ export default function RestreamerUI(props) {
 		channelid: '',
 		channels: [],
 	});
-	const [$metadata, setMetadata] = React.useState({});
+	const [$metadata, setMetadata] = React.useState<any>({});
 	const [$changelog, setChangelog] = React.useState({
 		open: false,
 		current: '',

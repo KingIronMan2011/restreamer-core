@@ -8,6 +8,18 @@ import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import type { ReactNode } from 'react';
+
+type ComponentProps = {
+	children?: ReactNode;
+	open?: boolean;
+	title?: ReactNode;
+	onClose?: (() => void) | null;
+	onHelp?: (() => void) | null;
+	buttonsRight?: ReactNode;
+	buttonsLeft?: ReactNode;
+	maxWidth?: number;
+};
 
 const useStyles = makeStyles((theme) => ({
 	modalHeader: {
@@ -42,65 +54,69 @@ const useStyles = makeStyles((theme) => ({
 
 // todo: use MuiDialog
 
-const Component = React.forwardRef((props, ref) => {
-	const classes = useStyles();
+const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
+	(props, ref) => {
+		const classes = useStyles();
 
-	const paperStyle = {};
+		const paperStyle: React.CSSProperties = {};
 
-	if (props.maxWidth > 0) {
-		paperStyle.maxWidth = props.maxWidth + 'px';
-	}
+		if (props.maxWidth > 0) {
+			paperStyle.maxWidth = props.maxWidth + 'px';
+		}
 
-	return (
-		<Modal
-			open={props.open}
-			onClose={props.onClose}
-			className="modal"
-			disableScrollLock
-		>
-			<Paper
-				className={classes.modalPaper}
-				elevation={0}
-				ref={ref}
-				tabIndex={-1}
-				style={paperStyle}
+		return (
+			<Modal
+				open={props.open}
+				onClose={props.onClose}
+				className="modal"
+				disableScrollLock
 			>
-				<Grid container spacing={0}>
-					<Grid item xs={12} className={classes.modalHeader}>
-						<Typography variant="button">{props.title}</Typography>
-						{typeof props.onClose === 'function' && (
-							<IconButton
-								color="inherit"
-								size="small"
-								onClick={props.onClose}
-							>
-								<CloseIcon fontSize="small" />
-							</IconButton>
-						)}
-						{typeof props.onHelp === 'function' && (
-							<IconButton
-								color="inherit"
-								size="small"
-								onClick={props.onHelp}
-							>
-								<HelpIcon fontSize="small" />
-							</IconButton>
-						)}
+				<Paper
+					className={classes.modalPaper}
+					elevation={0}
+					ref={ref}
+					tabIndex={-1}
+					style={paperStyle}
+				>
+					<Grid container spacing={0}>
+						<Grid item xs={12} className={classes.modalHeader}>
+							<Typography variant="button">
+								{props.title}
+							</Typography>
+							{typeof props.onClose === 'function' && (
+								<IconButton
+									color="inherit"
+									size="small"
+									onClick={props.onClose}
+								>
+									<CloseIcon fontSize="small" />
+								</IconButton>
+							)}
+							{typeof props.onHelp === 'function' && (
+								<IconButton
+									color="inherit"
+									size="small"
+									onClick={props.onHelp}
+								>
+									<HelpIcon fontSize="small" />
+								</IconButton>
+							)}
+						</Grid>
 					</Grid>
-				</Grid>
-				<Grid item xs={12}>
-					{props.children}
-				</Grid>
-				<Grid container spacing={0}>
-					<Grid item xs={12} className={classes.modalFooter}>
-						<div>{props.buttonsRight}</div>
-						{props.buttonsLeft}
+					<Grid item xs={12}>
+						{props.children}
 					</Grid>
-				</Grid>
-			</Paper>
-		</Modal>
-	);
-});
+					<Grid container spacing={0}>
+						<Grid item xs={12} className={classes.modalFooter}>
+							<div>{props.buttonsRight}</div>
+							{props.buttonsLeft}
+						</Grid>
+					</Grid>
+				</Paper>
+			</Modal>
+		);
+	},
+);
 
 export default Component;
 
@@ -110,6 +126,6 @@ Component.defaultProps = {
 	onClose: null,
 	onHelp: null,
 	buttonsRight: null,
-	buttonsLefts: null,
+	buttonsLeft: null,
 	maxWidth: -1,
 };

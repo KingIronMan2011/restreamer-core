@@ -41,7 +41,6 @@ export default function License(props) {
 	let link = '';
 	let description = '';
 
-	 
 	const reVersion = new RegExp('[0-9]+.[0-9]+$');
 
 	let version = '4.0';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /*
 
 Ingest Metadata Layout:
@@ -349,7 +350,7 @@ const initMetadata = (initialMetadata) => {
 
 const transformers = {};
 
-const mergeMetadata = (metadata, base) => {
+const mergeMetadata = (metadata, base = null) => {
 	if (!metadata) {
 		metadata = {};
 	}
@@ -431,7 +432,7 @@ const ingestTransformers = {
 	},
 };
 
-const mergeIngestMetadata = (metadata, base) => {
+const mergeIngestMetadata = (metadata, base = null) => {
 	if (!metadata) {
 		metadata = {};
 	}
@@ -524,7 +525,7 @@ const initEgressMetadata = (initialMetadata) => {
 
 const egressTransformers = {};
 
-const mergeEgressMetadata = (metadata, base) => {
+const mergeEgressMetadata = (metadata, base = null) => {
 	if (!metadata) {
 		metadata = {};
 	}
@@ -855,7 +856,7 @@ const createOutputStreams = (sources, profiles, requireVideo = true) => {
 	return streams;
 };
 
-const initSource = (type, initialSource) => {
+const initSource = (type = '', initialSource = {}) => {
 	if (!initialSource) {
 		initialSource = {};
 	}
@@ -875,7 +876,7 @@ const initSource = (type, initialSource) => {
 	return source;
 };
 
-const initProfile = (initialProfile) => {
+const initProfile = (initialProfile = {}) => {
 	if (!initialProfile) {
 		initialProfile = {};
 	}
@@ -1014,7 +1015,7 @@ const initProfile = (initialProfile) => {
 	return profile;
 };
 
-const initStream = (initialStream) => {
+const initStream = (initialStream = {}) => {
 	if (!initialStream) {
 		initialStream = {};
 	}

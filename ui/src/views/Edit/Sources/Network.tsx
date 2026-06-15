@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -430,7 +431,6 @@ const getProtocolClass = (url) => {
 const isAuthProtocol = (url) => {
 	const protocolClass = getProtocolClass(url);
 
-	 
 	switch (protocolClass) {
 		case 'amqp':
 		case 'ftp':

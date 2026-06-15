@@ -1,4 +1,5 @@
 import React from 'react';
+import type { CSSProperties } from 'react';
 
 import { Trans } from '@lingui/macro';
 import Grid from '@mui/material/Grid';
@@ -19,7 +20,7 @@ export default function Progress(props) {
 		marginBottom: -5,
 	};
 
-	const divStyle = {
+	const divStyle: CSSProperties = {
 		backgroundColor: Palette.background.box_default,
 		textAlign: 'center',
 		borderRadius: 4,
@@ -36,7 +37,7 @@ export default function Progress(props) {
 		...divStyle,
 	};
 
-	const fpsStyle = {
+	const fpsStyle: CSSProperties = {
 		...divStyle,
 	};
 

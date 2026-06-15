@@ -5,7 +5,12 @@ import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
 	{
-		ignores: ['dist/**', 'build/**', 'node_modules/**', 'src/locales/*/messages.js'],
+		ignores: [
+			'dist/**',
+			'build/**',
+			'node_modules/**',
+			'src/locales/*/messages.js',
+		],
 	},
 	{
 		files: ['**/*.{js,mjs,cjs,ts,mts,cts,tsx}'],

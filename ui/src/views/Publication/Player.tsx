@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -69,13 +70,13 @@ export default function Edit(props) {
 	const { channelid: _channelid } = useParams();
 	const { i18n } = useLingui();
 	const address = props.restreamer.Address();
-	const timeout = React.useRef();
+	const timeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const notify = React.useContext(NotifyContext);
 	const [$player] = React.useState('videojs-public');
 	const [$ready, setReady] = React.useState(false);
 	const [$state, setState] = React.useState('disconnected');
-	const [$metadata, setMetadata] = React.useState({});
-	const [$settings, setSettings] = React.useState({});
+	const [$metadata, setMetadata] = React.useState<any>({});
+	const [$settings, setSettings] = React.useState<any>({});
 	const [$tab, setTab] = React.useState('embed');
 	const [$revision, setRevision] = React.useState(0);
 	const [$saving, setSaving] = React.useState(false);

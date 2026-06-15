@@ -3,6 +3,13 @@ import React from 'react';
 import makeStyles from '@mui/styles/makeStyles';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
+import type { HTMLAttributes, ReactNode } from 'react';
+
+type TabPanelProps = HTMLAttributes<HTMLDivElement> & {
+	children?: ReactNode;
+	index: any;
+	value: any;
+};
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -13,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function TabPanel(props) {
+export default function TabPanel(props: TabPanelProps) {
 	const classes = useStyles();
 	const { children, value, index, ...other } = props;
 
@@ -26,7 +33,7 @@ export default function TabPanel(props) {
 			{...other}
 		>
 			{value === index && (
-				<Box classes={{ root: classes }} p={0}>
+				<Box className={classes.root} p={0}>
 					{children}
 				</Box>
 			)}

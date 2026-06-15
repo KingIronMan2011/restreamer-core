@@ -5,14 +5,14 @@ export default {
 	styleOverrides: {
 		root: {
 			backgroundColor: base.palette.background.paper,
-			borderBottom: `1px solid ${base.palette.background.darker2}`,
+			borderBottom: `1px solid ${base.palette.background.dark2}`,
 			'&.Mui-selected': {
 				backgroundColor: base.palette.background.box_danger,
 			},
 		},
 		button: {
 			'&:hover': {
-				backgroundColor: `${base.palette.background.darker1} !important`,
+				backgroundColor: `${base.palette.background.dark1} !important`,
 			},
 		},
 		'&.Mui-selected': {

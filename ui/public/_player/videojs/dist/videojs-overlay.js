@@ -50,12 +50,12 @@ var registerPlugin = videojs.registerPlugin || videojs.plugin;
  * @return {Boolean}
  */
 
-/* eslint-disable no-self-compare */
+ 
 
 var isNumber = function isNumber(n) {
 	return typeof n === 'number' && n === n;
 };
-/* eslint-enable no-self-compare */
+ 
 
 /**
  * Whether a value is a string with no whitespace.
