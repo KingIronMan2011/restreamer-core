@@ -12,6 +12,7 @@
 
 # Vite cache
 .vite/
+vite-env.d.ts
 
 # misc
 NONPUBLIC
