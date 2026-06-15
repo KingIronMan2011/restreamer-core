@@ -373,7 +373,9 @@ func NewServer(config Config) (Server, error) {
 			Index:      "index.html",
 			IgnoreBase: true,
 		}))
-	} else if uifs, err := iofs.Sub(ui.FS, "build"); err == nil {
+	} else if uifs, err := iofs.Sub(ui.FS, "build"); err != nil {
+		s.logger.Warn().WithError(err).Log("Embedded UI unavailable")
+	} else {
 		group := s.router.Group("/ui")
 		group.Use(middleware.AddTrailingSlashWithConfig(middleware.TrailingSlashConfig{
 			Skipper: func(c echo.Context) bool {
