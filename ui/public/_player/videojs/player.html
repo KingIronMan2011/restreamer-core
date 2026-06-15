@@ -21,30 +21,7 @@
 			title="{{name}}"
 		/>
 		<script src="channels/{{channelid}}/config.js"></script>
-		<link href="player/videojs/dist/video-js.min.css" rel="stylesheet" />
-		<link
-			href="player/videojs/dist/video-js-skin.min.css"
-			rel="stylesheet"
-		/>
-		<link
-			href="player/videojs/dist/videojs-overlay.min.css"
-			rel="stylesheet"
-		/>
-		<link
-			href="player/videojs/dist/videojs-license.min.css"
-			rel="stylesheet"
-		/>
-		{{#if airplay}}
-		<link
-			href="player/videojs/dist/videojs-airplay.min.css"
-			rel="stylesheet"
-		/>
-		{{/if}} {{#if chromecast}}
-		<link
-			href="player/videojs/dist/videojs-chromecast.min.css"
-			rel="stylesheet"
-		/>
-		{{/if}}
+		<link href="player/videojs/dist/videojs-public.css" rel="stylesheet" />
 	</head>
 	<body>
 		<div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0">
@@ -55,13 +32,8 @@
 				playsinline
 			></video>
 		</div>
-		<script src="player/videojs/dist/video.min.js"></script>
-		<script src="player/videojs/dist/videojs-overlay.min.js"></script>
-		<script src="player/videojs/dist/videojs-license.min.js"></script>
-		{{#if airplay}}
-		<script src="player/videojs/dist/videojs-airplay.min.js"></script>
-		{{/if}} {{#if chromecast}}
-		<script src="player/videojs/dist/videojs-chromecast.min.js"></script>
+		<script src="player/videojs/dist/videojs-public.js"></script>
+		{{#if chromecast}}
 		<script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
 		{{/if}}
 		<script>
@@ -108,75 +80,10 @@
 			var statistics = convertBoolParam('stats', playerConfig.statistics);
 			var color = convertColorParam('color', playerConfig.color.buttons);
 
-			var config = {
-				controls: true,
-				poster:
-					playerConfig.poster + '?t=' + String(new Date().getTime()),
-				autoplay: autoplay ? 'muted' : false,
-				muted: mute,
-				liveui: true,
-				responsive: true,
-				fluid: true,
-				sources: [
-					{
-						src: window.location.origin + '/' + playerConfig.source,
-						type: 'application/x-mpegURL',
-					},
-				],
-			};
-
-			if (playerConfig.chromecast) {
-				config.techOrder = ['chromecast', 'html5'];
-				config.plugins.chromecast = {
-					receiverApplicationId: 'CC1AD845',
-				};
-			}
-
-			if (playerConfig.airplay) {
-				config.plugins.airPlay = {};
-			}
-
-			var player = videojs('player', config);
-			player.ready(function () {
-				if (playerConfig.logo.image.length != 0) {
-					var overlay = null;
-
-					var imgTag = new Image();
-					imgTag.onLoad = function () {
-						imgTag.setAttribute('width', this.width);
-						imgTag.setAttribute('height'.this.height);
-					};
-					imgTag.src = playerConfig.logo.image + '?' + Math.random();
-
-					if (playerConfig.logo.link.length !== 0) {
-						var aTag = document.createElement('a');
-						aTag.setAttribute('href', playerConfig.logo.link);
-						aTag.setAttribute('target', '_blank');
-						aTag.appendChild(imgTag);
-						overlay = aTag.outerHTML;
-					} else {
-						overlay = imgTag.outerHTML;
-					}
-
-					player.overlay({
-						align: playerConfig.logo.position,
-						overlays: [
-							{
-								showBackground: false,
-								content: overlay,
-								start: 'playing',
-								end: 'pause',
-							},
-						],
-					});
-
-					player.license(playerConfig.license);
-				}
-
-				if (autoplay === true) {
-					// https://videojs.com/blog/autoplay-best-practices-with-video-js/
-					player.play();
-				}
+			window.RestreamerVideoJS.createPlayer({
+				playerId: 'player',
+				autoplay: autoplay,
+				mute: mute,
 			});
 		</script>
 	</body>

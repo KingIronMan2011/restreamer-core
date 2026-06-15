@@ -56,30 +56,8 @@
 			href="https://fonts.googleapis.com/icon?family=Material+Icons&amp;display=block"
 		/>
 		{{#ifEquals player "videojs"}}
-		<link href="player/videojs/dist/video-js.min.css" rel="stylesheet" />
-		<link
-			href="player/videojs/dist/video-js-skin.min.css"
-			rel="stylesheet"
-		/>
-		<link
-			href="player/videojs/dist/videojs-overlay.min.css"
-			rel="stylesheet"
-		/>
-		<link
-			href="player/videojs/dist/videojs-license.min.css"
-			rel="stylesheet"
-		/>
-		{{#if airplay}}
-		<link
-			href="player/videojs/dist/videojs-airplay.min.css"
-			rel="stylesheet"
-		/>
-		{{/if}} {{#if chromecast}}
-		<link
-			href="player/videojs/dist/videojs-chromecast.min.css"
-			rel="stylesheet"
-		/>
-		{{/if}} {{/ifEquals}}
+		<link href="player/videojs/dist/videojs-public.css" rel="stylesheet" />
+		{{/ifEquals}}
 		<style>
 			/**	flexboxgrid 6.3.1 **/
 			.container,
@@ -1854,13 +1832,8 @@
 
 		<script src="channels/{{channel_id}}/config.js"></script>
 		{{#ifEquals player "videojs"}}
-		<script src="player/videojs/dist/video.min.js"></script>
-		<script src="player/videojs/dist/videojs-overlay.min.js"></script>
-		<script src="player/videojs/dist/videojs-license.min.js"></script>
-		{{#if airplay}}
-		<script src="player/videojs/dist/videojs-airplay.min.js"></script>
-		{{/if}} {{#if chromecast}}
-		<script src="player/videojs/dist/videojs-chromecast.min.js"></script>
+		<script src="player/videojs/dist/videojs-public.js"></script>
+		{{#if chromecast}}
 		<script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
 		{{/if}} {{else}}
 		<script src="player/clappr/clappr.min.js"></script>

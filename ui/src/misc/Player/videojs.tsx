@@ -7,7 +7,7 @@ import 'videojs-overlay';
 import 'video.js/dist/video-js.min.css';
 import './video-js-skin-internal.min.css';
 import './video-js-skin-public.min.css';
-import 'videojs-overlay/dist/videojs-overlay.css';
+import '../../../node_modules/videojs-overlay/dist/videojs-overlay.css';
 
 export default function VideoJS(props) {
 	const videoRef = React.useRef(null);
