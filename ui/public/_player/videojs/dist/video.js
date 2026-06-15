@@ -2225,9 +2225,8 @@
 			if (event.button !== null && event.button !== undefined) {
 				// The following is disabled because it does not pass videojs-standard
 				// and... yikes.
-				 
+
 				event.button = event.button & 1 ? 0 : event.button & 4 ? 1 : event.button & 2 ? 2 : 0;
-				 
 			}
 		}
 		event.fixed_ = true;
@@ -2641,7 +2640,6 @@
 			timeout = null;
 		};
 
-		 
 		const debounced = function () {
 			const self = this;
 			const args = arguments;
@@ -2658,7 +2656,6 @@
 			context.clearTimeout(timeout);
 			timeout = context.setTimeout(later, wait);
 		};
-		 
 
 		debounced.cancel = cancel;
 		return debounced;
@@ -5014,7 +5011,7 @@
 		 */
 		setTimeout(fn, timeout) {
 			// declare as variables so they are properly available in timeout function
-			 
+
 			var timeoutId;
 			fn = bind_(this, fn);
 			this.clearTimersOnDispose_();
@@ -5131,7 +5128,7 @@
 			this.clearTimersOnDispose_();
 
 			// declare as variables so they are properly available in rAF function
-			 
+
 			var id;
 			fn = bind_(this, fn);
 			id = window.requestAnimationFrame(() => {
@@ -13022,7 +13019,7 @@
 		 */
 		getCurrentComponent(target) {
 			this.updateFocusableComponents();
-			 
+
 			const curComp = target || document.activeElement;
 			if (this.focusableComponents.length) {
 				for (const i of this.focusableComponents) {
@@ -32023,10 +32020,8 @@
 			this.parseStream = new ParseStream();
 			this.lineStream.pipe(this.parseStream);
 			this.lastProgramDateTime = null;
-			 
 
 			const self = this;
-			 
 
 			const uris = [];
 			let currentUri = {}; // if specified, the active EXT-X-MAP definition
@@ -32953,7 +32948,7 @@
 		}
 		if (!Array.isArray(bytes) && !isTypedArray(bytes) && !(bytes instanceof ArrayBuffer)) {
 			// any non-number or NaN leads to empty uint8array
-			 
+
 			if (typeof bytes !== 'number' || (typeof bytes === 'number' && bytes !== bytes)) {
 				bytes = 0;
 			} else {
@@ -33018,7 +33013,6 @@
 			_ref2$le = _ref2.le,
 			le = _ref2$le === void 0 ? false : _ref2$le;
 
-		 
 		if ((typeof number !== 'bigint' && typeof number !== 'number') || (typeof number === 'number' && number !== number)) {
 			number = 0;
 		}
@@ -38692,7 +38686,7 @@
 		let presentationTime = periodStart;
 		let number = playlist.mediaSequence || 0; // firstOffset is the offset from the end of the sidx box
 
-		let startIndex;  
+		let startIndex;
 
 		if (typeof sidx.firstOffset === 'bigint') {
 			startIndex = window.BigInt(sidxEnd) + sidx.firstOffset;
@@ -38707,7 +38701,7 @@
 
 			const duration = reference.subsegmentDuration; // should be an inclusive range
 
-			let endIndex;  
+			let endIndex;
 
 			if (typeof startIndex === 'bigint') {
 				endIndex = startIndex + window.BigInt(size) - window.BigInt(1);
@@ -42926,7 +42920,7 @@
 
 				if (nextPart > -1 && nextPart !== parts.length - 1) {
 					// add existing parts to our preload hints
-					 
+
 					parameters._HLS_part = nextPart;
 				} // this if statement makes sure that we request the msn
 				// of the preload segment if:
@@ -42942,13 +42936,12 @@
 					nextMSN--;
 				}
 			} // add _HLS_msn= in front of any _HLS_part query
-			 
 
 			parameters._HLS_msn = nextMSN;
 		}
 		if (media.serverControl && media.serverControl.canSkipUntil) {
 			// add _HLS_skip= infront of all other queries.
-			 
+
 			parameters._HLS_skip = media.serverControl.canSkipDateranges ? 'v2' : 'YES';
 		}
 		if (Object.keys(parameters).length) {
@@ -47879,19 +47872,11 @@
 
 				this.parse708captions_ = typeof options.parse708captions === 'boolean' ? options.parse708captions : true;
 				this.captionPackets_ = [];
-				this.ccStreams_ = [
-					new Cea608Stream(0, 0),
-					 
-					new Cea608Stream(0, 1),
-					 
-					new Cea608Stream(1, 0),
-					 
-					new Cea608Stream(1, 1),  
-				];
+				this.ccStreams_ = [new Cea608Stream(0, 0), new Cea608Stream(0, 1), new Cea608Stream(1, 0), new Cea608Stream(1, 1)];
 				if (this.parse708captions_) {
 					this.cc708Stream_ = new Cea708Stream({
 						captionServices: options.captionServices,
-					});  
+					});
 				}
 				this.reset(); // forward data and done events from CCs to this CaptionStream
 
@@ -50269,9 +50254,9 @@
 					}
 				};
 				parsePat = function (payload, pat) {
-					pat.section_number = payload[7];  
+					pat.section_number = payload[7];
 
-					pat.last_section_number = payload[8];  
+					pat.last_section_number = payload[8];
 					// skip the PSI header and parse the first PMT entry
 
 					self.pmtPid = ((payload[10] & 0x1f) << 8) | payload[11];
@@ -54273,7 +54258,6 @@
 														result.firstKeyFrame = firstKeyFrame;
 														result.firstKeyFrame.type = 'video';
 													} else {
-														 
 														console.warn(
 															'Failed to extract PTS/DTS from PES at first keyframe. ' +
 																'This could be an unusual TS segment, or else mux.js did not ' +
@@ -55004,10 +54988,8 @@
 				transmuxedData,
 				callback: onDone,
 			});
-			 
 
 			dequeue(transmuxer);
-			 
 		};
 		const handleError = () => {
 			const error = {
@@ -63217,7 +63199,6 @@ ${segmentInfoString(segmentInfo)}`); // If there's an init segment associated wi
 				const encrypted = new Uint8Array(data.encrypted.bytes, data.encrypted.byteOffset, data.encrypted.byteLength);
 				const key = new Uint32Array(data.key.bytes, data.key.byteOffset, data.key.byteLength / 4);
 				const iv = new Uint32Array(data.iv.bytes, data.iv.byteOffset, data.iv.byteLength / 4);
-				 
 
 				new Decrypter(encrypted, key, iv, function (err, bytes) {
 					self.postMessage(
@@ -63228,7 +63209,6 @@ ${segmentInfoString(segmentInfo)}`); // If there's an init segment associated wi
 						[bytes.buffer],
 					);
 				});
-				 
 			};
 		}),
 	);

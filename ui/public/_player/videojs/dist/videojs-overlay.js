@@ -50,12 +50,9 @@ var registerPlugin = videojs.registerPlugin || videojs.plugin;
  * @return {Boolean}
  */
 
- 
-
 var isNumber = function isNumber(n) {
 	return typeof n === 'number' && n === n;
 };
- 
 
 /**
  * Whether a value is a string with no whitespace.

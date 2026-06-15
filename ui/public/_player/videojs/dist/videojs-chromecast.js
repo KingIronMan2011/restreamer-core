@@ -3302,7 +3302,6 @@
 			function (require, module, exports) {
 				'use strict';
 
-				 
 				var preloadWebComponents = require('./preloadWebComponents'),
 					createChromecastButton = require('./components/ChromecastButton'),
 					createChromecastTech = require('./tech/ChromecastTech'),
@@ -3370,7 +3369,7 @@
 						// polyfills that the Chromecast framework may need for the <google-cast-button>
 						// component to work properly, this plugin does not use the <google-cast-button>
 						// component.
-						require('webcomponents.js/webcomponents-lite.js');  
+						require('webcomponents.js/webcomponents-lite.js');
 					}
 				};
 			},
