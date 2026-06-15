@@ -1,5 +1,2 @@
 dist/videojs-public.js
 dist/videojs-public.css
-dist/ic_airplay_white_24px.svg
-dist/ic_cast_connected_white_24dp.png
-dist/ic_cast_white_24dp.png
