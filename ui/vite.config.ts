@@ -1,16 +1,9 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [
-		react({
-			babel: {
-				// Keep babel-plugin-macros so @lingui/macro transforms work.
-				plugins: ['macros'],
-			},
-		} as any) as any,
-	],
+	plugins: [react()],
 	base: '/ui/',
 	build: {
 		outDir: 'build',

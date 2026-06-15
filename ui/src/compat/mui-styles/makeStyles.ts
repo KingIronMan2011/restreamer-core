@@ -5,7 +5,9 @@ type StyleValue = string | number | undefined | null;
 interface StyleRule {
 	[key: string]: StyleValue | StyleRule;
 }
-type Styles = Record<string, StyleRule> | ((theme: any) => Record<string, StyleRule>);
+type Styles =
+	| Record<string, StyleRule>
+	| ((theme: any) => Record<string, StyleRule>);
 
 const unitlessProperties = new Set([
 	'font-weight',
@@ -55,7 +57,9 @@ function serializeRule(selector: string, rule: StyleRule) {
 					? rawProperty.replaceAll('&', selector)
 					: `${selector} ${rawProperty}`;
 
-				nested.push(serializeRule(nestedSelector, rawValue as StyleRule));
+				nested.push(
+					serializeRule(nestedSelector, rawValue as StyleRule),
+				);
 			}
 			continue;
 		}
