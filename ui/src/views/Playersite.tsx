@@ -60,7 +60,8 @@ const templateTypes = [
 ];
 
 function CheckboxList(props) {
-	const [$checked, setChecked] = React.useState(props.selected);
+    const { disabled = false, selected = [], items = [], onChange = function () {} } = props;
+	const [$checked, setChecked] = React.useState(selected);
 
 	const handleToggle = (value) => () => {
 		const currentIndex = $checked.indexOf(value);
@@ -74,7 +75,7 @@ function CheckboxList(props) {
 
 		setChecked(newChecked);
 
-		props.onChange({
+		onChange({
 			target: {
 				value: [...newChecked],
 			},
@@ -90,7 +91,7 @@ function CheckboxList(props) {
 				maxHeight: 300,
 			}}
 		>
-			{props.items.map((value) => {
+			{items.map((value) => {
 				const labelId = `checkbox-list-label-${value.id}`;
 
 				return (
@@ -98,7 +99,7 @@ function CheckboxList(props) {
 						<ListItemButton
 							onClick={handleToggle(value.id)}
 							dense
-							disabled={props.disabled}
+							disabled={disabled}
 						>
 							<ListItemIcon>
 								<Checkbox
@@ -118,19 +119,13 @@ function CheckboxList(props) {
 	);
 }
 
-CheckboxList.defaultProps = {
-	disabled: false,
-	selected: [],
-	items: [],
-	onChange: function () {},
-};
-
 export default function Playersite(props) {
+    const { restreamer = null } = props;
 	const classes = useStyles();
 	const navigate = useNavigate();
 	const { i18n } = useLingui();
-	const address = props.restreamer.Address() + '/';
-	const playersiteUrl = props.restreamer.GetPlayersiteUrl();
+	const address = restreamer.Address() + '/';
+	const playersiteUrl = restreamer.GetPlayersiteUrl();
 	const notify = React.useContext(NotifyContext);
 	const [$ready, setReady] = React.useState(false);
 	const [$ingest, setIngest] = React.useState(false);
@@ -155,15 +150,15 @@ export default function Playersite(props) {
 	}, []);
 
 	const mount = async () => {
-		const data = await props.restreamer.GetMetadata();
+		const data = await restreamer.GetMetadata();
 
 		setData(data);
-		setSettings(props.restreamer.InitPlayersiteSettings(data.playersite));
-		setChannels(props.restreamer.ListChannels());
-		setIngest(props.restreamer.HasIngest());
+		setSettings(restreamer.InitPlayersiteSettings(data.playersite));
+		setChannels(restreamer.ListChannels());
+		setIngest(restreamer.HasIngest());
 
-		setTemplates(await props.restreamer.ListPlayersiteTemplates());
-		setAvailable(await props.restreamer.HasPlayersite());
+		setTemplates(await restreamer.ListPlayersiteTemplates());
+		setAvailable(await restreamer.HasPlayersite());
 
 		setReady(true);
 	};
@@ -194,7 +189,7 @@ export default function Playersite(props) {
 	};
 
 	const handleBackgroundImageUpload = async (data, extension) => {
-		const path = await props.restreamer.UploadPlayersiteBackgroundImage(
+		const path = await restreamer.UploadPlayersiteBackgroundImage(
 			data,
 			extension,
 		);
@@ -209,12 +204,12 @@ export default function Playersite(props) {
 	};
 
 	const handleTemplateUpload = async (data, extension) => {
-		const name = await props.restreamer.UploadPlayersiteTemplate(
+		const name = await restreamer.UploadPlayersiteTemplate(
 			data,
 			$settings.templatename,
 		);
 
-		setTemplates(await props.restreamer.ListPlayersiteTemplates());
+		setTemplates(await restreamer.ListPlayersiteTemplates());
 		setSettings({
 			...$settings,
 			template: name,
@@ -227,12 +222,12 @@ export default function Playersite(props) {
 	const handleTemplateDelete = async () => {
 		setSaving(true);
 
-		await props.restreamer.DeletePlayersiteTemplate($settings.template);
+		await restreamer.DeletePlayersiteTemplate($settings.template);
 		setSettings({
 			...$settings,
 			template: '!default',
 		});
-		setTemplates(await props.restreamer.ListPlayersiteTemplates());
+		setTemplates(await restreamer.ListPlayersiteTemplates());
 
 		setSaving(false);
 	};
@@ -305,7 +300,7 @@ export default function Playersite(props) {
 			playersite: $settings,
 		};
 
-		let res = await props.restreamer.SetMetadata(data);
+		let res = await restreamer.SetMetadata(data);
 		if (res === false) {
 			notify.Dispatch(
 				'error',
@@ -316,7 +311,7 @@ export default function Playersite(props) {
 			return;
 		}
 
-		res = await props.restreamer.UpdatePlayersite();
+		res = await restreamer.UpdatePlayersite();
 		if (res === false) {
 			notify.Dispatch(
 				'error',
@@ -327,7 +322,7 @@ export default function Playersite(props) {
 			return;
 		}
 
-		setAvailable(await props.restreamer.HasPlayersite());
+		setAvailable(await restreamer.HasPlayersite());
 
 		setSaving(false);
 
@@ -359,8 +354,8 @@ export default function Playersite(props) {
 		return null;
 	}
 
-	let main_channelid = props.restreamer.GetCurrentChannelID();
-	const channel = props.restreamer.GetChannel($settings.channelid);
+	let main_channelid = restreamer.GetCurrentChannelID();
+	const channel = restreamer.GetChannel($settings.channelid);
 	if (channel !== null) {
 		main_channelid = channel.channelid;
 	}
@@ -506,7 +501,7 @@ export default function Playersite(props) {
 											return selected
 												.map((id) => {
 													const channel =
-														props.restreamer.GetChannel(
+														restreamer.GetChannel(
 															id,
 														);
 													if (channel === null) {
@@ -1063,7 +1058,3 @@ export default function Playersite(props) {
 		</React.Fragment>
 	);
 }
-
-Playersite.defaultProps = {
-	restreamer: null,
-};

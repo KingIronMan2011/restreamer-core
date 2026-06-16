@@ -123,11 +123,12 @@ const ImageBackdrop = styled('span')(({ theme }) => ({
 }));
 
 function ChannelButton(props) {
+    const { url = '', width = 200, title = '', state = '', disabled = false, onClick = () => {} } = props;
 	const classes = useStyles();
 	const theme = useTheme();
 
 	let color = theme.palette.primary.main;
-	switch (props.state) {
+	switch (state) {
 		case 'disconnected':
 			color = theme.palette.primary.main;
 			break;
@@ -147,7 +148,7 @@ function ChannelButton(props) {
 	}
 
 	let color_active = theme.palette.primary.main;
-	switch (props.disabled) {
+	switch (disabled) {
 		case true:
 			color_active = theme.palette.primary.light;
 			break;
@@ -169,15 +170,15 @@ function ChannelButton(props) {
 		>
 			<ImageButton
 				focusRipple
-				disabled={props.disabled}
-				onClick={props.onClick}
-				style={{ width: props.width }}
+				disabled={disabled}
+				onClick={onClick}
+				style={{ width: width }}
 			>
 				<Stack direction="column" spacing={0.5}>
 					<Image
 						style={{
-							width: props.width,
-							height: Math.floor((props.width / 16) * 9),
+							width: width,
+							height: Math.floor((width / 16) * 9),
 						}}
 					>
 						<ImageAlt>
@@ -185,7 +186,7 @@ function ChannelButton(props) {
 						</ImageAlt>
 						<ImageSrc
 							style={{
-								backgroundImage: `url(${props.url})`,
+								backgroundImage: `url(${url})`,
 								borderColor: color_active,
 							}}
 						/>
@@ -201,7 +202,7 @@ function ChannelButton(props) {
 						className={classes.imageTitle}
 					>
 						<Typography variant="body2" color="inherit">
-							{props.title}
+							{title}
 						</Typography>
 						<Typography variant="body2" color="inherit">
 							<LensIcon
@@ -215,15 +216,6 @@ function ChannelButton(props) {
 		</Grid>
 	);
 }
-
-ChannelButton.defaultProps = {
-	url: '',
-	width: 200,
-	title: '',
-	state: '',
-	disabled: false,
-	onClick: () => {},
-};
 
 const calculateColumnsPerRow = (
 	breakpointSmall,
@@ -268,13 +260,14 @@ export default function ChannelList(props) {
 	const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
 	const [windowHeight, setWindowHeight] = React.useState(window.innerHeight);
 
-	const {
-		channels: allChannels,
-		channelid,
-		onClick,
-		onClose,
-		onState,
-	} = props;
+	const { channels: allChannels = [], channelid = '', onClick = (channelid) => {}, onClose = () => {}, onState = (channelids) => {
+                    		const states = {};
+                    		for (const channelid of channelids) {
+                    			states[channelid] = '';
+                    		}
+
+                    		return states;
+                    	}, open = false, onAdd = (name) => {} } = props;
 
 	const [$largeChannelList, setLargeChannelList] = React.useState(false);
 
@@ -386,7 +379,7 @@ export default function ChannelList(props) {
 		});
 	};
 
-	if (props.open === false) {
+	if (open === false) {
 		return null;
 	}
 
@@ -403,9 +396,9 @@ export default function ChannelList(props) {
 		<React.Fragment>
 			<SwipeableDrawer
 				anchor="bottom"
-				open={props.open}
+				open={open}
 				onOpen={() => {}}
-				onClose={props.onClose}
+				onClose={onClose}
 				sx={{
 					marginButtom: 60,
 					'& .MuiDrawer-paper': {
@@ -470,7 +463,7 @@ export default function ChannelList(props) {
 									<IconButton
 										color="inherit"
 										size="large"
-										onClick={props.onClose}
+										onClick={onClose}
 									>
 										<CloseIcon />
 									</IconButton>
@@ -560,7 +553,7 @@ export default function ChannelList(props) {
 						disabled={$addChannel.name.length === 0}
 						onClick={() => {
 							handleAddChannelDialog();
-							props.onAdd($addChannel.name);
+							onAdd($addChannel.name);
 						}}
 					>
 						<Trans>Add</Trans>
@@ -587,20 +580,3 @@ export default function ChannelList(props) {
 		</React.Fragment>
 	);
 }
-
-ChannelList.defaultProps = {
-	open: false,
-	channelid: '',
-	channels: [],
-	onClose: () => {},
-	onClick: (channelid) => {},
-	onAdd: (name) => {},
-	onState: (channelids) => {
-		const states = {};
-		for (const channelid of channelids) {
-			states[channelid] = '';
-		}
-
-		return states;
-	},
-};

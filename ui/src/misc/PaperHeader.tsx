@@ -20,62 +20,52 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Component = function (props) {
+    const { spacing = 0, padding = null, title = '', variant = 'pagetitle', onAbort = null, onHelp = null, onEdit = null, onAdd = null } = props;
 	const classes = useStyles();
 
 	return (
-		<Grid container spacing={props.spacing} padding={props.padding}>
+		<Grid container spacing={spacing} padding={padding}>
 			<Grid item xs={12} className={classes.root}>
-				{typeof props.onAbort === 'function' && (
+				{typeof onAbort === 'function' && (
 					<IconButton
 						color="inherit"
 						size="small"
-						onClick={props.onAbort}
+						onClick={onAbort}
 					>
 						<CloseIcon />
 					</IconButton>
 				)}
-				{typeof props.onEdit === 'function' && (
+				{typeof onEdit === 'function' && (
 					<IconButton
 						color="inherit"
 						size="small"
-						onClick={props.onEdit}
+						onClick={onEdit}
 					>
 						<EditIcon />
 					</IconButton>
 				)}
-				{typeof props.onAdd === 'function' && (
+				{typeof onAdd === 'function' && (
 					<IconButton
 						color="inherit"
 						size="small"
-						onClick={props.onAdd}
+						onClick={onAdd}
 					>
 						<AddIcon />
 					</IconButton>
 				)}
-				{typeof props.onHelp === 'function' && (
+				{typeof onHelp === 'function' && (
 					<IconButton
 						color="inherit"
 						size="small"
-						onClick={props.onHelp}
+						onClick={onHelp}
 					>
 						<HelpIcon />
 					</IconButton>
 				)}
-				<Typography variant={props.variant}>{props.title}</Typography>
+				<Typography variant={variant}>{title}</Typography>
 			</Grid>
 		</Grid>
 	);
 };
 
 export default Component;
-
-Component.defaultProps = {
-	spacing: 0,
-	padding: null,
-	title: '',
-	variant: 'pagetitle',
-	onAbort: null,
-	onHelp: null,
-	onEdit: null,
-	onAdd: null,
-};

@@ -1,7 +1,5 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
-
 import { useLingui } from '@lingui/react';
 import { Trans, t } from '@lingui/macro';
 import makeStyles from '../compat/mui-styles/makeStyles';
@@ -654,8 +652,9 @@ function ErrorTab(props) {
 }
 
 function ErrorBox(props) {
-	const messages = props.messages.filter(
-		(m) => props.configvalue === '' || m.configvalue === props.configvalue,
+    const { configvalue = '', messages: _messages = [] } = props;
+	const messages = _messages.filter(
+		(m) => configvalue === '' || m.configvalue === configvalue,
 	);
 
 	if (messages.length === 0) {
@@ -676,11 +675,6 @@ function ErrorBox(props) {
 	);
 }
 
-ErrorBox.defaultProps = {
-	configvalue: '',
-	messages: [],
-};
-
 const toArray = (val, separator) => {
 	return val
 		.split(separator)
@@ -697,6 +691,7 @@ const toInt = (val) => {
 };
 
 export default function Settings(props) {
+    const { restreamer = null } = props;
 	const classes = useStyles();
 	const { i18n } = useLingui();
 	const navigate = useNavigate();
@@ -714,10 +709,10 @@ export default function Settings(props) {
 		core: '',
 		service: false,
 	});
-	const [$expert, setExpert] = React.useState(props.restreamer.IsExpert());
+	const [$expert, setExpert] = React.useState(restreamer.IsExpert());
 	const [$updates, setUpdates] = React.useState({
-		has: props.restreamer.HasUpdates(),
-		want: props.restreamer.CheckForUpdates(),
+		has: restreamer.HasUpdates(),
+		want: restreamer.CheckForUpdates(),
 	});
 	const [$tab, setTab] = React.useState(_tab ? _tab : 'general');
 	const [$tabs, setTabs] = React.useState({
@@ -762,14 +757,14 @@ export default function Settings(props) {
 	useInterval(() => {
 		setUpdates({
 			...$updates,
-			has: props.restreamer.HasUpdates(),
+			has: restreamer.HasUpdates(),
 		});
 	}, 1000 * 2);
 
 	const load = async () => {
-		setReloadKey(props.restreamer.CreatedAt().toISOString());
+		setReloadKey(restreamer.CreatedAt().toISOString());
 
-		const data = await props.restreamer.Config();
+		const data = await restreamer.Config();
 
 		let config = null;
 		let overrides = [];
@@ -828,17 +823,17 @@ export default function Settings(props) {
 			overrides: overrides,
 			outdated: outdated,
 			core: '',
-			service: props.restreamer.HasService(),
+			service: restreamer.HasService(),
 		});
 	};
 
 	const handleExpertMode = () => {
-		props.restreamer.SetExpert(!$expert);
+		restreamer.SetExpert(!$expert);
 		setExpert(!$expert);
 	};
 
 	const handleCheckForUpdates = () => {
-		props.restreamer.SetCheckForUpdates(!$updates.want);
+		restreamer.SetCheckForUpdates(!$updates.want);
 		setUpdates({
 			...$updates,
 			want: !$updates.want,
@@ -923,7 +918,7 @@ export default function Settings(props) {
 	};
 
 	const updateLogdata = async () => {
-		const logdata = await props.restreamer.Log();
+		const logdata = await restreamer.Log();
 		setLogdata(logdata.join('\n'));
 	};
 
@@ -1040,7 +1035,7 @@ export default function Settings(props) {
 
 		let outdated = $config.outdated;
 
-		const [, err] = await props.restreamer.ConfigSet(config);
+		const [, err] = await restreamer.ConfigSet(config);
 		if (err !== null) {
 			if (err.code === 404) {
 				notify.Dispatch(
@@ -1171,7 +1166,7 @@ export default function Settings(props) {
 			timeout: false,
 		});
 
-		const res = await props.restreamer.ConfigReload();
+		const res = await restreamer.ConfigReload();
 		if (res === false) {
 			notify.Dispatch(
 				'error',
@@ -1193,7 +1188,7 @@ export default function Settings(props) {
 			});
 		};
 
-		props.restreamer.IgnoreAPIErrors(true);
+		restreamer.IgnoreAPIErrors(true);
 
 		let restarted = false;
 
@@ -1202,7 +1197,7 @@ export default function Settings(props) {
 
 			let currentKey = $reloadKey;
 
-			const about = await props.restreamer.About();
+			const about = await restreamer.About();
 			if (about === null) {
 				// API is not yet available
 				continue;
@@ -1240,8 +1235,8 @@ export default function Settings(props) {
 			return false;
 		}
 
-		await props.restreamer.Validate();
-		await props.restreamer.Login(
+		await restreamer.Validate();
+		await restreamer.Login(
 			$config.data.api.auth.username,
 			$config.data.api.auth.password,
 		);
@@ -3185,11 +3180,3 @@ export default function Settings(props) {
 		</React.Fragment>
 	);
 }
-
-Settings.defaultProps = {
-	restreamer: null,
-};
-
-Settings.propTypes = {
-	restreamer: PropTypes.object.isRequired,
-};

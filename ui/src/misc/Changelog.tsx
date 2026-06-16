@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Changelog(props) {
+    const { open = false, current = '', previous = '', onClose = () => {} } = props;
 	const [$data, setData] = React.useState('');
 	const classes = useStyles();
 
@@ -62,7 +63,7 @@ export default function Changelog(props) {
 
 	const onMount = async () => {
 		let data = await loadData();
-		data = filter(data, props.current, props.previous);
+		data = filter(data, current, previous);
 
 		setData(data);
 	};
@@ -171,15 +172,15 @@ export default function Changelog(props) {
 
 	return (
 		<Dialog
-			open={props.open}
-			onClose={props.onClose}
+			open={open}
+			onClose={onClose}
 			title={<Trans>Update details (Changelog)</Trans>}
 			maxWidth={600}
 			buttonsRight={
 				<Button
 					variant="outlined"
 					color="primary"
-					onClick={props.onClose}
+					onClick={onClose}
 				>
 					<Trans>Close</Trans>
 				</Button>
@@ -197,10 +198,3 @@ export default function Changelog(props) {
 		</Dialog>
 	);
 }
-
-Changelog.defaultProps = {
-	open: false,
-	current: '',
-	previous: '',
-	onClose: () => {},
-};

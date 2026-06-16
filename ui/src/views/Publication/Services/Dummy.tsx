@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Trans } from '@lingui/macro';
 import ExtensionIcon from '@mui/icons-material/Extension';
@@ -265,7 +264,8 @@ function createOutputs(settings, skills, metadata, streams) {
 // 'settings' is the settings object where you store the settings for the
 // service. Its state is managed by the parent React component.
 function Service(props) {
-	const settings = init(props.settings);
+    const { settings: _settings = {}, skills = null, metadata = {}, streams = [], onChange = function (output, settings) {} } = props;
+	const settings = init(_settings);
 
 	const handleChange = (what) => (event) => {
 		const value = event.target.value;
@@ -278,15 +278,15 @@ function Service(props) {
 
 		const outputs = createOutputs(
 			settings,
-			props.skills,
-			props.metadata,
-			props.streams,
+			skills,
+			metadata,
+			streams,
 		);
 
-		props.onChange(outputs, settings);
+		onChange(outputs, settings);
 	};
 
-	if (props.skills === null) {
+	if (skills === null) {
 		return null;
 	}
 
@@ -316,22 +316,6 @@ function Service(props) {
 		</Grid>
 	);
 }
-
-Service.defaultProps = {
-	settings: {},
-	skills: null,
-	metadata: {},
-	streams: [],
-	onChange: function (output, settings) {},
-};
-
-Service.propTypes = {
-	metadata: PropTypes.object.isRequired,
-	onChange: PropTypes.func.isRequired,
-	settings: PropTypes.object.isRequired,
-	skills: PropTypes.object,
-	streams: PropTypes.array.isRequired,
-};
 
 export {
 	id,

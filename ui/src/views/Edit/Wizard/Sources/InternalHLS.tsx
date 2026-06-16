@@ -22,9 +22,10 @@ const initSettings = (initialSettings, config) => {
 };
 
 function Source(props) {
-	const config = S.func.initConfig(props.config);
-	const settings = initSettings(props.settings, config);
-	const skills = S.func.initSkills(props.skills);
+    const { settings: _settings = {}, config: _config = null, skills: _skills = null, onChange = function (type, settings, inputs, ready) {} } = props;
+	const config = S.func.initConfig(_config);
+	const settings = initSettings(_settings, config);
+	const skills = S.func.initSkills(_skills);
 
 	const handleChange = (newSettings) => {
 		newSettings = newSettings || settings;
@@ -32,7 +33,7 @@ function Source(props) {
 		const inputs = S.func.createInputs(newSettings, config, skills);
 		newSettings.address = inputs[0].address;
 
-		props.onChange(
+		onChange(
 			S.id,
 			newSettings,
 			inputs,
@@ -62,13 +63,6 @@ function Source(props) {
 		</React.Fragment>
 	);
 }
-
-Source.defaultProps = {
-	settings: {},
-	config: null,
-	skills: null,
-	onChange: function (type, settings, inputs, ready) {},
-};
 
 function SourceIcon(props) {
 	return <Icon style={{ color: '#FFF' }} {...props} />;

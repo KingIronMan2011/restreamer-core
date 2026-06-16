@@ -2,18 +2,19 @@ import React from 'react';
 
 // Adapted from https://stackoverflow.com/questions/10420352/converting-file-size-in-bytes-to-human-readable-string
 export default function Filesize(props) {
-	let bytes = props.bytes;
-	const thresh = props.si ? 1000 : 1024;
+    const { bytes: _bytes = 0, si = false, digits = 1 } = props;
+	let bytes = _bytes;
+	const thresh = si ? 1000 : 1024;
 
 	if (Math.abs(bytes) < thresh) {
 		return bytes + ' B';
 	}
 
-	const units = props.si
+	const units = si
 		? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
 		: ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
 	let u = -1;
-	const r = 10 ** props.digits;
+	const r = 10 ** digits;
 
 	do {
 		bytes /= thresh;
@@ -25,13 +26,7 @@ export default function Filesize(props) {
 
 	return (
 		<React.Fragment>
-			{bytes.toFixed(props.digits) + ' ' + units[u]}
+			{bytes.toFixed(digits) + ' ' + units[u]}
 		</React.Fragment>
 	);
 }
-
-Filesize.defaultProps = {
-	bytes: 0,
-	si: false,
-	digits: 1,
-};

@@ -3,12 +3,13 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 
 const Component = function (props) {
+    const { spacing = 3, textAlign = 'left' } = props;
 	return (
 		<Grid
 			container
 			justifyContent="center"
-			spacing={props.spacing}
-			align={props.textAlign}
+			spacing={spacing}
+			align={textAlign}
 		>
 			<Grid item xs={12}>
 				{props.children}
@@ -18,8 +19,3 @@ const Component = function (props) {
 };
 
 export default Component;
-
-Component.defaultProps = {
-	spacing: 3,
-	textAlign: 'left',
-};

@@ -11,14 +11,15 @@ import PaperHeader from '../../../misc/PaperHeader';
 import Select from '../../../misc/Select';
 
 export default function VideoProfile(props) {
+    const { onAbort = () => {}, onHelp = () => {}, onBack = () => {}, onNext = () => {}, compatible = false, onStreamChange = () => {}, streamList = [], stream = 0, onDecoderChange = () => {}, decodersList = [], decoder = '', onEncoderChange = () => {}, encodersList = [], encoder = '' } = props;
 	return (
 		<Paper xs={12} sm={9} md={6} marginBottom="6em" className="PaperM">
 			<PaperHeader
 				spacing={2}
 				variant="h1"
 				title={<Trans>Video setup</Trans>}
-				onAbort={props.onAbort}
-				onHelp={props.onHelp}
+				onAbort={onAbort}
+				onHelp={onHelp}
 			/>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
@@ -35,15 +36,15 @@ export default function VideoProfile(props) {
 				<Grid item xs={12}>
 					<Select
 						label={<Trans>Profile</Trans>}
-						value={props.stream}
-						onChange={props.onStreamChange}
+						value={stream}
+						onChange={onStreamChange}
 					>
-						{props.streamList}
+						{streamList}
 					</Select>
 				</Grid>
-				{props.compatible === false && (
+				{compatible === false && (
 					<React.Fragment>
-						{props.encodersList.length === 0 ? (
+						{encodersList.length === 0 ? (
 							<Grid item xs={12}>
 								<Typography>
 									<Trans>
@@ -62,24 +63,24 @@ export default function VideoProfile(props) {
 										</Trans>
 									</Typography>
 								</Grid>
-								{props.decodersList.length >= 2 && (
+								{decodersList.length >= 2 && (
 									<Grid item xs={12}>
 										<Select
 											label={<Trans>Decoder</Trans>}
-											value={props.decoder}
-											onChange={props.onDecoderChange}
+											value={decoder}
+											onChange={onDecoderChange}
 										>
-											{props.decodersList}
+											{decodersList}
 										</Select>
 									</Grid>
 								)}
 								<Grid item xs={12}>
 									<Select
 										label={<Trans>Encoder</Trans>}
-										value={props.encoder}
-										onChange={props.onEncoderChange}
+										value={encoder}
+										onChange={onEncoderChange}
 									>
-										{props.encodersList}
+										{encodersList}
 									</Select>
 								</Grid>
 							</React.Fragment>
@@ -94,7 +95,7 @@ export default function VideoProfile(props) {
 						variant="outlined"
 						color="default"
 						fullWidth
-						onClick={props.onBack}
+						onClick={onBack}
 					>
 						<Trans>Back</Trans>
 					</Button>
@@ -105,10 +106,10 @@ export default function VideoProfile(props) {
 						fullWidth
 						color="primary"
 						disabled={
-							props.compatible === false &&
-							props.encodersList.length === 0
+							compatible === false &&
+							encodersList.length === 0
 						}
-						onClick={props.onNext}
+						onClick={onNext}
 					>
 						<Trans>Next</Trans>
 					</Button>
@@ -117,20 +118,3 @@ export default function VideoProfile(props) {
 		</Paper>
 	);
 }
-
-VideoProfile.defaultProps = {
-	onAbort: () => {},
-	onHelp: () => {},
-	onBack: () => {},
-	onNext: () => {},
-	compatible: false,
-	onStreamChange: () => {},
-	streamList: [],
-	stream: 0,
-	onDecoderChange: () => {},
-	decodersList: [],
-	decoder: '',
-	onEncoderChange: () => {},
-	encodersList: [],
-	encoder: '',
-};

@@ -19,14 +19,14 @@ const useStyles = makeStyles((theme) => ({
 const Component = function (props) {
 	const classes = useStyles();
 
-	const { open, title, onClose, onHelp, ...other } = props;
+	const { open = false, title = '', onClose = null, onHelp = null, ...other } = props;
 
 	return (
-		<Modal open={props.open} onClose={props.onClose} className="modal">
+		<Modal open={open} onClose={onClose} className="modal">
 			<ModalContent
-				title={props.title}
-				onClose={props.onClose}
-				onHelp={props.onHelp}
+				title={title}
+				onClose={onClose}
+				onHelp={onHelp}
 				style={{ overflow: 'hidden' }}
 			>
 				<Grid container spacing={1}>
@@ -48,10 +48,3 @@ const Component = function (props) {
 };
 
 export default Component;
-
-Component.defaultProps = {
-	open: false,
-	title: '',
-	onClose: null,
-	onHelp: null,
-};

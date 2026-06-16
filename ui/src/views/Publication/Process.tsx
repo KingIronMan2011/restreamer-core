@@ -26,10 +26,11 @@ function init(progress) {
 }
 
 export default function Process(props) {
-	const progress = init(props.progress);
+	const { progress: _progress = {}, onAction = function (action) {} } = props;
+	const progress = init(_progress);
 
 	const handleAction = (action) => () => {
-		props.onAction(action);
+		onAction(action);
 	};
 
 	return (
@@ -115,7 +116,3 @@ export default function Process(props) {
 	);
 }
 
-Progress.defaultProps = {
-	progress: {},
-	onAction: function (action) {},
-};

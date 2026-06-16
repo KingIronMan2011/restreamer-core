@@ -18,6 +18,7 @@ import PaperHeader from '../../../misc/PaperHeader';
 import Select from '../../../misc/Select';
 
 export default function Audio(props) {
+    const { onAbort = () => {}, onHelp = () => {}, onBack = () => {}, onNext = () => {}, onSource = () => {}, source = '', onAudioStreamChange = () => {}, onAudioDeviceChange = () => {}, streamList = [], deviceList = [], status = '', stream = 0, address = {} } = props;
 	const { i18n } = useLingui();
 
 	return (
@@ -26,15 +27,15 @@ export default function Audio(props) {
 				spacing={2}
 				variant="h1"
 				title={<Trans>Audio setup</Trans>}
-				onAbort={props.onAbort}
-				onHelp={props.onHelp}
+				onAbort={onAbort}
+				onHelp={onHelp}
 			/>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
 					<Divider />
 				</Grid>
 				<Grid item xs={12}>
-					{props.status === 'error' && (
+					{status === 'error' && (
 						<BoxText color="dark">
 							<WarningIcon fontSize="large" color="error" />
 							<Typography textAlign="center">
@@ -45,7 +46,7 @@ export default function Audio(props) {
 							</Typography>
 						</BoxText>
 					)}
-					{props.status === 'nostream' && (
+					{status === 'nostream' && (
 						<BoxText color="dark">
 							<WarningIcon fontSize="large" color="error" />
 							<Typography textAlign="center">
@@ -56,7 +57,7 @@ export default function Audio(props) {
 							</Typography>
 						</BoxText>
 					)}
-					{props.status === 'nocoder' && (
+					{status === 'nocoder' && (
 						<BoxText color="dark">
 							<WarningIcon fontSize="large" color="error" />
 							<Typography textAlign="center">
@@ -71,11 +72,11 @@ export default function Audio(props) {
 				<Grid item xs={12}>
 					<RadioGroup
 						row
-						value={props.source}
-						onChange={props.onSource}
+						value={source}
+						onChange={onSource}
 					>
 						<Grid container spacing={2}>
-							{props.streamList.length === 0 && (
+							{streamList.length === 0 && (
 								<Grid item xs={12}>
 									<Typography>
 										<Trans>
@@ -89,7 +90,7 @@ export default function Audio(props) {
 									</Typography>
 								</Grid>
 							)}
-							{props.streamList.length !== 0 && (
+							{streamList.length !== 0 && (
 								<React.Fragment>
 									<Grid item xs={12}>
 										<FormControlLabel
@@ -101,15 +102,15 @@ export default function Audio(props) {
 									<Grid item xs={12}>
 										<Select
 											label={<Trans>Stream</Trans>}
-											value={props.stream}
-											onChange={props.onAudioStreamChange}
+											value={stream}
+											onChange={onAudioStreamChange}
 										>
-											{props.streamList}
+											{streamList}
 										</Select>
 									</Grid>
 								</React.Fragment>
 							)}
-							{props.deviceList.length !== 0 && (
+							{deviceList.length !== 0 && (
 								<React.Fragment>
 									<Grid item xs={12}>
 										<FormControlLabel
@@ -121,10 +122,10 @@ export default function Audio(props) {
 									<Grid item xs={12}>
 										<Select
 											label={<Trans>Device</Trans>}
-											value={props.address}
-											onChange={props.onAudioDeviceChange}
+											value={address}
+											onChange={onAudioDeviceChange}
 										>
-											{props.deviceList}
+											{deviceList}
 										</Select>
 									</Grid>
 								</React.Fragment>
@@ -156,7 +157,7 @@ export default function Audio(props) {
 						variant="outlined"
 						color="default"
 						fullWidth
-						onClick={props.onBack}
+						onClick={onBack}
 					>
 						<Trans>Back</Trans>
 					</Button>
@@ -166,7 +167,7 @@ export default function Audio(props) {
 						variant="outlined"
 						fullWidth
 						color="primary"
-						onClick={props.onNext}
+						onClick={onNext}
 					>
 						<Trans>Next</Trans>
 					</Button>
@@ -175,19 +176,3 @@ export default function Audio(props) {
 		</Paper>
 	);
 }
-
-Audio.defaultProps = {
-	onAbort: () => {},
-	onHelp: () => {},
-	onBack: () => {},
-	onNext: () => {},
-	onSource: () => {},
-	source: '',
-	onAudioStreamChange: () => {},
-	onAudioDeviceChange: () => {},
-	streamList: [],
-	deviceList: [],
-	status: '',
-	stream: 0,
-	address: {},
-};

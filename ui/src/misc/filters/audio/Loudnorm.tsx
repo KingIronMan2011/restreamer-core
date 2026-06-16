@@ -30,7 +30,8 @@ function createGraph(settings) {
 }
 
 function Filter(props) {
-	const settings = init(props.settings);
+    const { settings: _settings = {}, onChange = function (settings, graph, automatic) {} } = props;
+	const settings = init(_settings);
 
 	const handleChange = (newSettings) => {
 		let automatic = false;
@@ -39,7 +40,7 @@ function Filter(props) {
 			automatic = true;
 		}
 
-		props.onChange(newSettings, createGraph(newSettings), automatic);
+		onChange(newSettings, createGraph(newSettings), automatic);
 	};
 
 	const update = (what) => (event) => {
@@ -72,11 +73,6 @@ function Filter(props) {
 		</React.Fragment>
 	);
 }
-
-Filter.defaultProps = {
-	settings: {},
-	onChange: function (settings, graph, automatic) {},
-};
 
 const filter = 'loudnorm';
 const name = 'Loudness Normalization';

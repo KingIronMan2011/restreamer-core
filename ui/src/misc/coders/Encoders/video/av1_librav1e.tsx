@@ -85,12 +85,13 @@ function createMapping(settings, stream, skills) {
 }
 
 function Speed(props) {
+    const { value = '-1', onChange = function (event) {} } = props;
 	return (
 		<React.Fragment>
 			<Select
 				label={<Trans>Speed Preset</Trans>}
-				value={props.value}
-				onChange={props.onChange}
+				value={value}
+				onChange={onChange}
 			>
 				<MenuItem value="-1">auto (-1)</MenuItem>
 				<MenuItem value="0">slowest (0)</MenuItem>
@@ -112,15 +113,11 @@ function Speed(props) {
 	);
 }
 
-Speed.defaultProps = {
-	value: '-1',
-	onChange: function (event) {},
-};
-
 function Coder(props) {
-	const settings = init(props.settings);
-	const stream = Helper.InitStream(props.stream);
-	const skills = Helper.InitSkills(props.skills);
+    const { stream: _stream = {}, settings: _settings = {}, skills: _skills = {}, onChange = function (settings, mapping) {} } = props;
+	const settings = init(_settings);
+	const stream = Helper.InitStream(_stream);
+	const skills = Helper.InitSkills(_skills);
 
 	const handleChange = (newSettings) => {
 		let automatic = false;
@@ -129,7 +126,7 @@ function Coder(props) {
 			automatic = true;
 		}
 
-		props.onChange(
+		onChange(
 			newSettings,
 			createMapping(newSettings, stream, skills),
 			automatic,
@@ -259,13 +256,6 @@ function Coder(props) {
 		</Grid>
 	);
 }
-
-Coder.defaultProps = {
-	stream: {},
-	settings: {},
-	skills: {},
-	onChange: function (settings, mapping) {},
-};
 
 const coder = 'librav1e';
 const name = 'AV1 (librav1e)';

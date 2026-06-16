@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Component(props) {
+    const { value = '', children = null, onChange = function (event) {} } = props;
 	const classes = useStyles();
 
 	return (
@@ -36,17 +37,11 @@ export default function Component(props) {
 				variant="scrollable"
 				scrollButtons
 				allowScrollButtonsMobile
-				value={props.value}
-				onChange={props.onChange}
+				value={value}
+				onChange={onChange}
 			>
-				{props.children}
+				{children}
 			</Tabs>
 		</Box>
 	);
 }
-
-Component.defaultProps = {
-	value: '',
-	children: null,
-	onChange: function (event) {},
-};

@@ -60,14 +60,15 @@ function initDevices(initialDevices) {
 }
 
 function Source(props) {
+    const { knownDevices = [], settings: _settings = {}, onChange = function (type, settings, inputs, ready) {}, onRefresh = function () {} } = props;
 	const { i18n } = useLingui();
-	const settings = initSettings(props.settings, props.knownDevices);
-	const devices = initDevices(props.knownDevices);
+	const settings = initSettings(_settings, knownDevices);
+	const devices = initDevices(knownDevices);
 
 	const handleChange = (newSettings) => {
 		newSettings = newSettings || settings;
 
-		props.onChange(
+		onChange(
 			S.id,
 			newSettings,
 			S.func.createInputs(newSettings),
@@ -76,7 +77,7 @@ function Source(props) {
 	};
 
 	const handleRefresh = () => {
-		props.onRefresh();
+		onRefresh();
 	};
 
 	const update = (what) => (event) => {
@@ -142,13 +143,6 @@ function Source(props) {
 		</React.Fragment>
 	);
 }
-
-Source.defaultProps = {
-	knownDevices: [],
-	settings: {},
-	onChange: function (type, settings, inputs, ready) {},
-	onRefresh: function () {},
-};
 
 function SourceIcon(props) {
 	return (

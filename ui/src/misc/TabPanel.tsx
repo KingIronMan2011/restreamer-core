@@ -2,7 +2,6 @@ import React from 'react';
 
 import makeStyles from '../compat/mui-styles/makeStyles';
 import Box from '@mui/material/Box';
-import PropTypes from 'prop-types';
 import type { HTMLAttributes, ReactNode } from 'react';
 
 type TabPanelProps = HTMLAttributes<HTMLDivElement> & {
@@ -40,9 +39,3 @@ export default function TabPanel(props: TabPanelProps) {
 		</div>
 	);
 }
-
-TabPanel.propTypes = {
-	children: PropTypes.node,
-	index: PropTypes.any.isRequired,
-	value: PropTypes.any.isRequired,
-};

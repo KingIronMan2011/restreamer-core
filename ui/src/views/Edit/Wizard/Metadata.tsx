@@ -12,14 +12,15 @@ import Paper from '../../../misc/Paper';
 import PaperHeader from '../../../misc/PaperHeader';
 
 export default function Metadata(props) {
+    const { onAbort = () => {}, onHelp = () => {}, onBack = () => {}, onNext = () => {}, onChange = (metadata) => {}, metadata = {} } = props;
 	return (
 		<Paper xs={12} sm={9} md={6} marginBottom="6em" className="PaperM">
 			<PaperHeader
 				spacing={2}
 				variant="h1"
 				title={<Trans>Metadata</Trans>}
-				onAbort={props.onAbort}
-				onHelp={props.onHelp}
+				onAbort={onAbort}
+				onHelp={onHelp}
 			/>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
@@ -35,8 +36,8 @@ export default function Metadata(props) {
 				</Grid>
 				<Grid item xs={12}>
 					<MetadataControl
-						settings={props.metadata}
-						onChange={props.onChange}
+						settings={metadata}
+						onChange={onChange}
 					/>
 				</Grid>
 				<Grid item xs={12}>
@@ -47,7 +48,7 @@ export default function Metadata(props) {
 						variant="outlined"
 						color="default"
 						fullWidth
-						onClick={props.onBack}
+						onClick={onBack}
 					>
 						<Trans>Back</Trans>
 					</Button>
@@ -57,7 +58,7 @@ export default function Metadata(props) {
 						variant="outlined"
 						fullWidth
 						color="primary"
-						onClick={props.onNext}
+						onClick={onNext}
 					>
 						<Trans>Next</Trans>
 					</Button>
@@ -66,12 +67,3 @@ export default function Metadata(props) {
 		</Paper>
 	);
 }
-
-Metadata.defaultProps = {
-	onAbort: () => {},
-	onHelp: () => {},
-	onBack: () => {},
-	onNext: () => {},
-	onChange: (metadata) => {},
-	metadata: {},
-};

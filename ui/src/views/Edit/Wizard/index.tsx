@@ -31,6 +31,7 @@ import License from './License';
 import Metadata from './Metadata';
 
 export default function Wizard(props) {
+    const { restreamer = null } = props;
 	const { i18n } = useLingui();
 	const navigate = useNavigate();
 	const { channelid: _channelid } = useParams();
@@ -70,22 +71,22 @@ export default function Wizard(props) {
 	}, [navigate, $invalid]);
 
 	const load = async () => {
-		const channelid = props.restreamer.SelectChannel(_channelid);
+		const channelid = restreamer.SelectChannel(_channelid);
 		if (channelid === '' || channelid !== _channelid) {
 			setInvalid(true);
 			return;
 		}
 
-		const skills = await props.restreamer.Skills();
+		const skills = await restreamer.Skills();
 		setSkills(skills);
 
-		const config = await props.restreamer.ConfigActive();
+		const config = await restreamer.ConfigActive();
 		setConfig(config);
 
 		setData({
 			...$data,
 			meta: {
-				name: props.restreamer.GetChannel(_channelid).name,
+				name: restreamer.GetChannel(_channelid).name,
 			},
 		});
 
@@ -93,9 +94,9 @@ export default function Wizard(props) {
 	};
 
 	const refreshSkills = async () => {
-		await props.restreamer.RefreshSkills();
+		await restreamer.RefreshSkills();
 
-		const skills = await props.restreamer.Skills();
+		const skills = await restreamer.Skills();
 		setSkills(skills);
 	};
 
@@ -106,7 +107,7 @@ export default function Wizard(props) {
 			status: 'none',
 		});
 
-		let [res, err] = await props.restreamer.Probe(
+		let [res, err] = await restreamer.Probe(
 			_channelid,
 			source.inputs,
 		);
@@ -203,7 +204,7 @@ export default function Wizard(props) {
 
 		data.streams = M.createOutputStreams(sources, profiles);
 
-		const [, err] = await props.restreamer.UpsertIngest(
+		const [, err] = await restreamer.UpsertIngest(
 			_channelid,
 			global,
 			inputs,
@@ -216,16 +217,16 @@ export default function Wizard(props) {
 		}
 
 		// Save the metadata
-		await props.restreamer.SetIngestMetadata(_channelid, data);
+		await restreamer.SetIngestMetadata(_channelid, data);
 
 		// Create update the ingest snapshot process
-		await props.restreamer.UpsertIngestSnapshot(_channelid, control);
+		await restreamer.UpsertIngestSnapshot(_channelid, control);
 
 		// Create/update the player
-		await props.restreamer.UpdatePlayer(_channelid);
+		await restreamer.UpdatePlayer(_channelid);
 
 		// Create/update the playersite
-		await props.restreamer.UpdatePlayersite();
+		await restreamer.UpdatePlayersite();
 
 		notify.Dispatch(
 			'success',
@@ -903,18 +904,18 @@ export default function Wizard(props) {
 
 		return <Error onAbort={handleAbort} onHelp={handleHelp('error')} />;
 	} else if ($step === 'ABORT') {
-		const nchannels = props.restreamer.ListChannels().length;
+		const nchannels = restreamer.ListChannels().length;
 
 		handleBack = () => {
 			setStep($abort.step);
 		};
 
 		handleNext = () => {
-			props.restreamer.DeleteChannel(_channelid);
+			restreamer.DeleteChannel(_channelid);
 
 			// Select a channel to jump back to
-			const channels = props.restreamer.ListChannels();
-			props.restreamer.SelectChannel(channels[0].channelid);
+			const channels = restreamer.ListChannels();
+			restreamer.SelectChannel(channels[0].channelid);
 
 			navigate(`/`);
 		};
@@ -931,7 +932,3 @@ export default function Wizard(props) {
 
 	return null;
 }
-
-Wizard.defaultProps = {
-	restreamer: null,
-};

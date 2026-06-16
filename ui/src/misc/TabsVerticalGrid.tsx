@@ -17,15 +17,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Component(props: ComponentProps) {
+    const { children = null } = props;
 	const classes = useStyles();
 
 	return (
 		<Grid item xs={12} className={classes.grid}>
-			{props.children}
+			{children}
 		</Grid>
 	);
 }
-
-Component.defaultProps = {
-	children: null,
-};

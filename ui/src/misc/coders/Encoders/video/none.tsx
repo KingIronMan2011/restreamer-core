@@ -18,9 +18,10 @@ function createMapping(settings, stream, skills) {
 }
 
 function Coder(props) {
+    const { stream: _stream = {}, settings: _settings = {}, skills: _skills = {}, onChange = function (settings, mapping) {} } = props;
 	const settings = {};
-	const stream = Helper.InitStream(props.stream);
-	const skills = Helper.InitSkills(props.skills);
+	const stream = Helper.InitStream(_stream);
+	const skills = Helper.InitSkills(_skills);
 
 	const handleChange = (newSettings) => {
 		let automatic = false;
@@ -29,7 +30,7 @@ function Coder(props) {
 			automatic = true;
 		}
 
-		props.onChange(
+		onChange(
 			newSettings,
 			createMapping(newSettings, stream, skills),
 			automatic,
@@ -43,13 +44,6 @@ function Coder(props) {
 
 	return null;
 }
-
-Coder.defaultProps = {
-	stream: {},
-	settings: {},
-	skills: {},
-	onChange: function (settings, mapping) {},
-};
 
 const coder = 'none';
 const name = 'No Video';

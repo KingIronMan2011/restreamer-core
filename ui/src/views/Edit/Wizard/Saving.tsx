@@ -9,9 +9,10 @@ import Paper from '../../../misc/Paper';
 import PaperHeader from '../../../misc/PaperHeader';
 
 export default function Saving(props) {
+    const { onAbort = () => {} } = props;
 	return (
 		<Paper xs={12} md={5} marginBottom="6em" className="PaperM">
-			<PaperHeader spacing={2} variant="h1" onAbort={props.onAbort} />
+			<PaperHeader spacing={2} variant="h1" onAbort={onAbort} />
 			<Grid container justifyContent="center" spacing={2} align="center">
 				<Grid item xs={12}>
 					<CircularProgress color="inherit" />
@@ -25,7 +26,3 @@ export default function Saving(props) {
 		</Paper>
 	);
 }
-
-Saving.defaultProps = {
-	onAbort: () => {},
-};

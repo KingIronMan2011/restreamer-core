@@ -8,19 +8,20 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '../../misc/Select';
 
 export default function StreamSelect(props) {
+    const { type = '', streams = [], selected: _selected = -1, allowCustom = false, allowNone = false, onChange = function (stream) {} } = props;
 	const { i18n } = useLingui();
-	let selected = props.selected;
+	let selected = _selected;
 
 	const handleChange = (event) => {
 		const stream = parseInt(event.target.value);
 
-		props.onChange(stream);
+		onChange(stream);
 	};
 
 	const streamList = [];
 
-	for (const s of props.streams) {
-		if (s.type !== props.type) {
+	for (const s of streams) {
+		if (s.type !== type) {
 			continue;
 		}
 
@@ -41,7 +42,7 @@ export default function StreamSelect(props) {
 		}
 	}
 
-	if (props.type === 'video') {
+	if (type === 'video') {
 		if (streamList.length === 0) {
 			selected = -1;
 			streamList.push(
@@ -56,7 +57,7 @@ export default function StreamSelect(props) {
 				</MenuItem>,
 			);
 		}
-	} else if (props.type === 'audio') {
+	} else if (type === 'audio') {
 		if (streamList.length === 0 && selected >= 0) {
 			selected = -1;
 			streamList.push(
@@ -92,12 +93,3 @@ export default function StreamSelect(props) {
 		</Grid>
 	);
 }
-
-StreamSelect.defaultProps = {
-	type: '',
-	streams: [],
-	selected: -1,
-	allowCustom: false,
-	allowNone: false,
-	onChange: function (stream) {},
-};

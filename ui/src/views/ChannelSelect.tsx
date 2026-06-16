@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function ChannelSelector(props) {
+    const { channelid = '' } = props;
 	const navigate = useNavigate();
 	const [$channelid, setChannelid] = React.useState('');
 
@@ -15,12 +16,8 @@ export default function ChannelSelector(props) {
 	}, [navigate, $channelid]);
 
 	const onMount = () => {
-		setChannelid(props.channelid);
+		setChannelid(channelid);
 	};
 
 	return null;
 }
-
-ChannelSelector.defaultProps = {
-	channelid: '',
-};

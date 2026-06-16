@@ -1032,17 +1032,18 @@ function Pull(props) {
 }
 
 function Push(props) {
+    const { knownDevices = [], settings: _settings = {}, config = {}, skills = null, onChange = function (settings) {}, onProbe = function (settings, inputs) {}, onRefresh = function () {} } = props;
 	const classes = useStyles();
-	const settings = props.settings;
+	const settings = _settings;
 
 	//const supportsHLS = isSupportedProtocol('http://', props.skills.protocols.input);
 	const supportsRTMP = isSupportedProtocol(
 		'rtmp://',
-		props.skills.protocols.input,
+		skills.protocols.input,
 	);
 	const supportsSRT = isSupportedProtocol(
 		'srt://',
-		props.skills.protocols.input,
+		skills.protocols.input,
 	);
 
 	if (!supportsRTMP && !supportsSRT) {
@@ -1081,7 +1082,7 @@ function Push(props) {
 						type="select"
 						label={<Trans>Protocol</Trans>}
 						value={settings.push.type}
-						onChange={props.onChange('push', 'type')}
+						onChange={onChange('push', 'type')}
 					>
 						<MenuItem value="rtmp" disabled={!supportsRTMP}>
 							RTMP
@@ -1098,16 +1099,6 @@ function Push(props) {
 		</React.Fragment>
 	);
 }
-
-Push.defaultProps = {
-	knownDevices: [],
-	settings: {},
-	config: {},
-	skills: null,
-	onChange: function (settings) {},
-	onProbe: function (settings, inputs) {},
-	onRefresh: function () {},
-};
 
 function PushHLS(props) {
 	const classes = useStyles();
@@ -1143,10 +1134,11 @@ function PushHLS(props) {
 }
 
 function PushRTMP(props) {
+    const { knownDevices = [], settings = {}, config: _config = {}, skills = null, onChange = function (settings) {}, onProbe = function (settings, inputs) {}, onRefresh = function () {} } = props;
 	const { i18n } = useLingui();
 	const classes = useStyles();
 	const navigate = useNavigate();
-	const config = props.config;
+	const config = _config;
 
 	let form = null;
 
@@ -1179,7 +1171,7 @@ function PushRTMP(props) {
 	} else {
 		const RTMP = getRTMP(config);
 
-		const filteredDevices = props.knownDevices.filter(
+		const filteredDevices = knownDevices.filter(
 			(device) => device.media === 'rtmp',
 		);
 		const options = filteredDevices.map((device) => {
@@ -1213,21 +1205,21 @@ function PushRTMP(props) {
 					<Select
 						type="select"
 						label={<Trans>Input stream</Trans>}
-						value={props.settings.push.name}
-						onChange={props.onChange('push', 'name')}
+						value={settings.push.name}
+						onChange={onChange('push', 'name')}
 					>
 						{options}
 					</Select>
 					<Button
 						size="small"
 						startIcon={<RefreshIcon />}
-						onClick={props.onRefresh}
+						onClick={onRefresh}
 						sx={{ float: 'right' }}
 					>
 						<Trans>Refresh</Trans>
 					</Button>
 				</Grid>
-				{props.settings.push.name === config.channelid && (
+				{settings.push.name === config.channelid && (
 					<React.Fragment>
 						<Grid item xs={12}>
 							<Typography>
@@ -1249,8 +1241,8 @@ function PushRTMP(props) {
 				<AdvancedSettings {...props} />
 				<Grid item xs={12}>
 					<FormInlineButton
-						onClick={props.onProbe}
-						disabled={props.settings.push.name === 'none'}
+						onClick={onProbe}
+						disabled={settings.push.name === 'none'}
 					>
 						<Trans>Probe</Trans>
 					</FormInlineButton>
@@ -1262,21 +1254,12 @@ function PushRTMP(props) {
 	return form;
 }
 
-PushRTMP.defaultProps = {
-	knownDevices: [],
-	settings: {},
-	config: {},
-	skills: null,
-	onChange: function (settings) {},
-	onProbe: function (settings, inputs) {},
-	onRefresh: function () {},
-};
-
 function PushSRT(props) {
+    const { knownDevices = [], settings = {}, config: _config = {}, skills = null, onChange = function (settings) {}, onProbe = function (settings, inputs) {}, onRefresh = function () {} } = props;
 	const { i18n } = useLingui();
 	const classes = useStyles();
 	const navigate = useNavigate();
-	const config = props.config;
+	const config = _config;
 
 	let form = null;
 
@@ -1309,7 +1292,7 @@ function PushSRT(props) {
 	} else {
 		const SRT = getSRT(config);
 
-		const filteredDevices = props.knownDevices.filter(
+		const filteredDevices = knownDevices.filter(
 			(device) => device.media === 'srt',
 		);
 		const options = filteredDevices.map((device) => {
@@ -1343,21 +1326,21 @@ function PushSRT(props) {
 					<Select
 						type="select"
 						label={<Trans>Input stream</Trans>}
-						value={props.settings.push.name}
-						onChange={props.onChange('push', 'name')}
+						value={settings.push.name}
+						onChange={onChange('push', 'name')}
 					>
 						{options}
 					</Select>
 					<Button
 						size="small"
 						startIcon={<RefreshIcon />}
-						onClick={props.onRefresh}
+						onClick={onRefresh}
 						sx={{ float: 'right' }}
 					>
 						<Trans>Refresh</Trans>
 					</Button>
 				</Grid>
-				{props.settings.push.name === config.channelid && (
+				{settings.push.name === config.channelid && (
 					<React.Fragment>
 						<Grid item xs={12}>
 							<Typography>
@@ -1379,8 +1362,8 @@ function PushSRT(props) {
 				<AdvancedSettings {...props} />
 				<Grid item xs={12}>
 					<FormInlineButton
-						onClick={props.onProbe}
-						disabled={props.settings.push.name === 'none'}
+						onClick={onProbe}
+						disabled={settings.push.name === 'none'}
 					>
 						<Trans>Probe</Trans>
 					</FormInlineButton>
@@ -1392,22 +1375,13 @@ function PushSRT(props) {
 	return form;
 }
 
-PushSRT.defaultProps = {
-	knownDevices: [],
-	settings: {},
-	config: {},
-	skills: null,
-	onChange: function (settings) {},
-	onProbe: function (settings, inputs) {},
-	onRefresh: function () {},
-};
-
 function Source(props) {
+    const { knownDevices = [], settings: _settings = {}, config: _config = {}, skills: _skills = null, onChange = function (settings) {}, onProbe = function (settings, inputs) {} } = props;
 	const classes = useStyles();
 	const { i18n } = useLingui();
-	const config = initConfig(props.config);
-	const settings = initSettings(props.settings, config);
-	const skills = initSkills(props.skills);
+	const config = initConfig(_config);
+	const settings = initSettings(_settings, config);
+	const skills = initSkills(_skills);
 
 	const handleChange = (section, what) => (event) => {
 		const value = event.target.value;
@@ -1445,13 +1419,13 @@ function Source(props) {
 			settings[what] = value;
 		}
 
-		props.onChange({
+		onChange({
 			...settings,
 		});
 	};
 
 	const handleProbe = () => {
-		props.onProbe(settings, createInputs(settings, config, skills));
+		onProbe(settings, createInputs(settings, config, skills));
 	};
 
 	const handleRefresh = () => {
@@ -1493,7 +1467,7 @@ function Source(props) {
 					settings={settings}
 					config={config}
 					skills={skills}
-					knownDevices={props.knownDevices}
+					knownDevices={knownDevices}
 					onChange={handleChange}
 					onProbe={handleProbe}
 					onRefresh={handleRefresh}
@@ -1502,15 +1476,6 @@ function Source(props) {
 		</React.Fragment>
 	);
 }
-
-Source.defaultProps = {
-	knownDevices: [],
-	settings: {},
-	config: {},
-	skills: null,
-	onChange: function (settings) {},
-	onProbe: function (settings, inputs) {},
-};
 
 function SourceIcon(props) {
 	return <Icon style={{ color: '#FFF' }} {...props} />;

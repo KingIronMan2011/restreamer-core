@@ -47,38 +47,39 @@ function reducer(settings, data) {
 }
 
 export default function SourceSelect(props) {
+    const { type = '', skills = {}, source = {}, config: _config = {}, onProbe = function (type, device, settings, inputs) {}, onSelect = function (type, device) {}, onChange = function (type, device, settings) {}, onRefresh = function () {}, onStore = function (name, data) {} } = props;
 	// $source holds the currently selected device. It is initialized with the
 	// last stored source.
-	const [$source, setSource] = React.useState(props.source.type);
+	const [$source, setSource] = React.useState(source.type);
 
 	// $settings is for storing the settings of the different devices, such that if
 	// the user switches between them, they can be restored. It takes the last
 	// stored source settings as initial value.
 	const [$settings, setSettings] = React.useReducer(
 		reducer,
-		props.source,
+		source,
 		init,
 	);
 
-	const config = initConfig(props.config);
+	const config = initConfig(_config);
 
 	const handleSource = (source) => {
-		props.onChange(props.type);
+		onChange(type);
 		setSource(source);
 
-		props.onSelect(props.type, source);
+		onSelect(type, source);
 	};
 
 	const handleRefresh = async () => {
-		await props.onRefresh();
+		await onRefresh();
 	};
 
 	const handleStore = async (name, data) => {
-		return await props.onStore(name, data);
+		return await onStore(name, data);
 	};
 
 	const handleProbe = async (settings, inputs) => {
-		await props.onProbe(props.type, $source, settings, inputs);
+		await onProbe(type, $source, settings, inputs);
 	};
 
 	const handleChange = (source) => (settings) => {
@@ -87,7 +88,7 @@ export default function SourceSelect(props) {
 			[source]: settings,
 		});
 
-		props.onChange(props.type, source, settings);
+		onChange(type, source, settings);
 	};
 
 	let sourceControl = null;
@@ -96,11 +97,11 @@ export default function SourceSelect(props) {
 	if (s !== null) {
 		const Component = s.component;
 
-		if (SemverSatisfies(props.skills.ffmpeg.version, s.ffversion)) {
+		if (SemverSatisfies(skills.ffmpeg.version, s.ffversion)) {
 			sourceControl = (
 				<Component
-					knownDevices={props.skills.sources[$source]}
-					skills={props.skills}
+					knownDevices={skills.sources[$source]}
+					skills={skills}
 					config={config[$source]}
 					settings={$settings[$source]}
 					onChange={handleChange($source)}
@@ -116,10 +117,10 @@ export default function SourceSelect(props) {
 		<Grid container spacing={1}>
 			<Grid item xs={12}>
 				<Select
-					type={props.type}
+					type={type}
 					selected={$source}
-					ffversion={props.skills.ffmpeg.version}
-					availableSources={props.skills.sources}
+					ffversion={skills.ffmpeg.version}
+					availableSources={skills.sources}
 					onSelect={handleSource}
 				/>
 			</Grid>
@@ -130,39 +131,28 @@ export default function SourceSelect(props) {
 	);
 }
 
-SourceSelect.defaultProps = {
-	type: '',
-	skills: {},
-	source: {},
-	config: {},
-	onProbe: function (type, device, settings, inputs) {},
-	onSelect: function (type, device) {},
-	onChange: function (type, device, settings) {},
-	onRefresh: function () {},
-	onStore: function (name, data) {},
-};
-
 function Select(props) {
+    const { type = '', selected = '', ffversion = '0.0.0', availableSources: _availableSources = {}, onSelect = function (source) {} } = props;
 	const handleSource = (source) => () => {
-		props.onSelect(source);
+		onSelect(source);
 	};
 
 	const availableSources = [];
 
 	for (const s of Sources.List()) {
-		if (!(s.id in props.availableSources)) {
+		if (!(s.id in _availableSources)) {
 			continue;
 		}
 
-		if (!s.capabilities.includes(props.type)) {
+		if (!s.capabilities.includes(type)) {
 			continue;
 		}
 
-		if (!SemverSatisfies(props.ffversion, s.ffversion)) {
+		if (!SemverSatisfies(ffversion, s.ffversion)) {
 			continue;
 		}
 
-		const variant = s.id === props.selected ? 'bigSelected' : 'big';
+		const variant = s.id === selected ? 'bigSelected' : 'big';
 		const Icon = s.icon;
 
 		availableSources.push(
@@ -195,11 +185,3 @@ function Select(props) {
 		</Grid>
 	);
 }
-
-Select.defaultProps = {
-	type: '',
-	selected: '',
-	ffversion: '0.0.0',
-	availableSources: {},
-	onSelect: function (source) {},
-};

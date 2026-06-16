@@ -9,16 +9,17 @@ import Paper from '../../../misc/Paper';
 import PaperHeader from '../../../misc/PaperHeader';
 
 export default function Abort(props) {
+    const { onHelp = () => {}, onBack = () => {}, onNext = () => {}, nchannels = 0 } = props;
 	return (
 		<Paper xs={12} sm={8} md={6} marginBottom="6em" className="PaperM">
 			<PaperHeader
 				spacing={3}
 				variant="h1"
 				title={<Trans>Abort</Trans>}
-				onHelp={props.onHelp}
+				onHelp={onHelp}
 			/>
 			<Grid container spacing={3}>
-				{props.nchannels <= 1 ? (
+				{nchannels <= 1 ? (
 					<React.Fragment>
 						<Grid item xs={12}>
 							<Typography>
@@ -33,7 +34,7 @@ export default function Abort(props) {
 								variant="outlined"
 								color="primary"
 								fullWidth
-								onClick={props.onBack}
+								onClick={onBack}
 							>
 								<Trans>Back</Trans>
 							</Button>
@@ -53,7 +54,7 @@ export default function Abort(props) {
 								variant="outlined"
 								color="default"
 								fullWidth
-								onClick={props.onNext}
+								onClick={onNext}
 							>
 								<Trans>Yes</Trans>
 							</Button>
@@ -63,7 +64,7 @@ export default function Abort(props) {
 								variant="outlined"
 								color="primary"
 								fullWidth
-								onClick={props.onBack}
+								onClick={onBack}
 							>
 								<Trans>No</Trans>
 							</Button>
@@ -74,10 +75,3 @@ export default function Abort(props) {
 		</Paper>
 	);
 }
-
-Abort.defaultProps = {
-	onHelp: () => {},
-	onBack: () => {},
-	onNext: () => {},
-	nchannels: 0,
-};

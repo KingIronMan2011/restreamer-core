@@ -88,7 +88,8 @@ function init(settings) {
 }
 
 function Service(props) {
-	const settings = init(props.settings);
+    const { settings: _settings = {}, skills = {}, metadata = {}, streams = [], onChange = function (output, settings) {} } = props;
+	const settings = init(_settings);
 
 	const handleChange = (what) => (event) => {
 		const value = event.target.value;
@@ -97,7 +98,7 @@ function Service(props) {
 
 		const outputs = createOutput(settings);
 
-		props.onChange(outputs, settings);
+		onChange(outputs, settings);
 	};
 
 	const createOutput = (settings) => {
@@ -161,8 +162,8 @@ function Service(props) {
 	};
 
 	const allowRTMPS =
-		props.skills.protocols.includes('rtmps') &&
-		props.skills.formats.includes('flv');
+		skills.protocols.includes('rtmps') &&
+		skills.formats.includes('flv');
 
 	return (
 		<Grid container spacing={2}>
@@ -249,14 +250,6 @@ function Service(props) {
 		</Grid>
 	);
 }
-
-Service.defaultProps = {
-	settings: {},
-	skills: {},
-	metadata: {},
-	streams: [],
-	onChange: function (output, settings) {},
-};
 
 export {
 	id,

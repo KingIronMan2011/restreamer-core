@@ -71,11 +71,12 @@ function createMapping(settings, stream, skills) {
 }
 
 function RateControl(props) {
+    const { value = '', onChange = function (event) {} } = props;
 	return (
 		<Select
 			label={<Trans>Rate control</Trans>}
-			value={props.value}
-			onChange={props.onChange}
+			value={value}
+			onChange={onChange}
 		>
 			<MenuItem value="0">auto</MenuItem>
 			<MenuItem value="1">Constant-quality</MenuItem>
@@ -88,17 +89,13 @@ function RateControl(props) {
 	);
 }
 
-RateControl.defaultProps = {
-	value: '',
-	onChange: function (event) {},
-};
-
 function Profile(props) {
+    const { value = '', onChange = function (event) {} } = props;
 	return (
 		<Select
 			label={<Trans>Profile</Trans>}
-			value={props.value}
-			onChange={props.onChange}
+			value={value}
+			onChange={onChange}
 		>
 			<MenuItem value="578">baseline (constrained)</MenuItem>
 			<MenuItem value="77">main</MenuItem>
@@ -107,15 +104,11 @@ function Profile(props) {
 	);
 }
 
-Profile.defaultProps = {
-	value: '',
-	onChange: function (event) {},
-};
-
 function Coder(props) {
-	const settings = init(props.settings);
-	const stream = Helper.InitStream(props.stream);
-	const skills = Helper.InitSkills(props.skills);
+    const { stream: _stream = {}, settings: _settings = {}, skills: _skills = {}, onChange = function (settings, mapping) {} } = props;
+	const settings = init(_settings);
+	const stream = Helper.InitStream(_stream);
+	const skills = Helper.InitSkills(_skills);
 
 	const handleChange = (newSettings) => {
 		let automatic = false;
@@ -124,7 +117,7 @@ function Coder(props) {
 			automatic = true;
 		}
 
-		props.onChange(
+		onChange(
 			newSettings,
 			createMapping(newSettings, stream, skills),
 			automatic,
@@ -194,13 +187,6 @@ function Coder(props) {
 		</Grid>
 	);
 }
-
-Coder.defaultProps = {
-	stream: {},
-	settings: {},
-	skills: {},
-	onChange: function (settings, mapping) {},
-};
 
 const coder = 'hevc_vaapi';
 const name = 'HEVC (Intel VAAPI)';

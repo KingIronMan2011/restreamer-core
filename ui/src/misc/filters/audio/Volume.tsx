@@ -40,11 +40,12 @@ function createGraph(settings) {
 }
 
 function VolumeLevel(props) {
+    const { value = '', onChange = function (event) {} } = props;
 	return (
 		<Select
 			label={<Trans>Volume</Trans>}
-			value={props.value}
-			onChange={props.onChange}
+			value={value}
+			onChange={onChange}
 		>
 			<MenuItem value="inherit">
 				<Trans>Inherit</Trans>
@@ -65,33 +66,24 @@ function VolumeLevel(props) {
 	);
 }
 
-VolumeLevel.defaultProps = {
-	value: '',
-	onChange: function (event) {},
-};
-
 function VolumeDB(props) {
+    const { value = '', disabled = false, onChange = function (event) {} } = props;
 	return (
 		<TextField
 			variant="outlined"
 			fullWidth
 			label={<Trans>Decibels (dB)</Trans>}
 			type="number"
-			value={props.value}
-			disabled={props.disabled}
-			onChange={props.onChange}
+			value={value}
+			disabled={disabled}
+			onChange={onChange}
 		/>
 	);
 }
 
-VolumeDB.defaultProps = {
-	value: '',
-	disabled: false,
-	onChange: function (event) {},
-};
-
 function Filter(props) {
-	const settings = init(props.settings);
+    const { settings: _settings = {}, onChange = function (settings, graph, automatic) {} } = props;
+	const settings = init(_settings);
 
 	const handleChange = (newSettings) => {
 		let automatic = false;
@@ -100,7 +92,7 @@ function Filter(props) {
 			automatic = true;
 		}
 
-		props.onChange(newSettings, createGraph(newSettings), automatic);
+		onChange(newSettings, createGraph(newSettings), automatic);
 	};
 
 	const update = (what) => (event) => {
@@ -135,11 +127,6 @@ function Filter(props) {
 		</React.Fragment>
 	);
 }
-
-Filter.defaultProps = {
-	settings: {},
-	onChange: function (settings, graph, automatic) {},
-};
 
 const filter = 'volume';
 const name = 'Volume';

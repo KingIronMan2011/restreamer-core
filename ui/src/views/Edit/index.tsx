@@ -1,8 +1,6 @@
 // @ts-nocheck
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
-
 import { useLingui } from '@lingui/react';
 import { Trans, t } from '@lingui/macro';
 import makeStyles from '../../compat/mui-styles/makeStyles';
@@ -57,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Edit(props) {
+    const { restreamer = null } = props;
 	const classes = useStyles();
 	const { i18n } = useLingui();
 	const navigate = useNavigate();
@@ -96,25 +95,25 @@ export default function Edit(props) {
 	}, [navigate, $invalid]);
 
 	const load = async () => {
-		const channelid = props.restreamer.SelectChannel(_channelid);
+		const channelid = restreamer.SelectChannel(_channelid);
 		if (channelid === '' || channelid !== _channelid) {
 			setInvalid(true);
 			return;
 		}
 
-		const proc = await props.restreamer.GetIngestProgress(_channelid);
+		const proc = await restreamer.GetIngestProgress(_channelid);
 		setProcess(proc);
 
-		const metadata = await props.restreamer.GetIngestMetadata(_channelid);
+		const metadata = await restreamer.GetIngestMetadata(_channelid);
 		setData({
 			...$data,
 			...metadata,
 		});
 
-		const skills = await props.restreamer.Skills();
+		const skills = await restreamer.Skills();
 		setSkills(skills);
 
-		const config = await props.restreamer.ConfigActive();
+		const config = await restreamer.ConfigActive();
 		setConfig(config);
 
 		const complete = M.validateProfile(
@@ -174,9 +173,9 @@ export default function Edit(props) {
 	const handleSourceEditDialogDone = async () => {
 		let stopped = false;
 
-		stopped = await props.restreamer.StopIngest(_channelid);
+		stopped = await restreamer.StopIngest(_channelid);
 		stopped = stopped
-			? await props.restreamer.StopIngestSnapshot(_channelid)
+			? await restreamer.StopIngestSnapshot(_channelid)
 			: false;
 
 		const target = $editDialog.target;
@@ -210,18 +209,18 @@ export default function Edit(props) {
 	};
 
 	const handleSkillsRefresh = async () => {
-		await props.restreamer.RefreshSkills();
+		await restreamer.RefreshSkills();
 
-		const skills = await props.restreamer.Skills();
+		const skills = await restreamer.Skills();
 		setSkills(skills);
 	};
 
 	const handleSourceStore = async (name, data) => {
-		return await props.restreamer.UploadData('', name, data);
+		return await restreamer.UploadData('', name, data);
 	};
 
 	const handleSourceProbe = async (inputs) => {
-		let [res, err] = await props.restreamer.Probe(_channelid, inputs);
+		let [res, err] = await restreamer.Probe(_channelid, inputs);
 		if (err !== null) {
 			res = {
 				streams: [],
@@ -320,7 +319,7 @@ export default function Edit(props) {
 			}
 
 			// Create/update the ingest
-			let [, err] = await props.restreamer.UpsertIngest(
+			let [, err] = await restreamer.UpsertIngest(
 				_channelid,
 				global,
 				inputs,
@@ -337,7 +336,7 @@ export default function Edit(props) {
 			}
 
 			// Save the metadata
-			let res = await props.restreamer.SetIngestMetadata(
+			let res = await restreamer.SetIngestMetadata(
 				_channelid,
 				$data,
 			);
@@ -350,7 +349,7 @@ export default function Edit(props) {
 			}
 
 			// Create/update the ingest snapshot process
-			[, err] = await props.restreamer.UpsertIngestSnapshot(
+			[, err] = await restreamer.UpsertIngestSnapshot(
 				_channelid,
 				control,
 			);
@@ -365,7 +364,7 @@ export default function Edit(props) {
 			}
 
 			// Create/update the player
-			res = await props.restreamer.UpdatePlayer(_channelid);
+			res = await restreamer.UpdatePlayer(_channelid);
 			if (res === false) {
 				notify.Dispatch(
 					'warning',
@@ -375,7 +374,7 @@ export default function Edit(props) {
 			}
 
 			// Create/update the playersite
-			res = await props.restreamer.UpdatePlayersite();
+			res = await restreamer.UpdatePlayersite();
 			if (res === false) {
 				notify.Dispatch(
 					'warning',
@@ -421,7 +420,7 @@ export default function Edit(props) {
 			saving: true,
 		});
 
-		const res = await props.restreamer.DeleteChannel(_channelid);
+		const res = await restreamer.DeleteChannel(_channelid);
 		if (res === false) {
 			setState({
 				...$state,
@@ -897,11 +896,3 @@ export default function Edit(props) {
 		</React.Fragment>
 	);
 }
-
-Edit.defaultProps = {
-	restreamer: null,
-};
-
-Edit.propTypes = {
-	restreamer: PropTypes.object.isRequired,
-};

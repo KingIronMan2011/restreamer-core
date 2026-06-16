@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Trans } from '@lingui/macro';
 
@@ -22,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TabContent(props) {
+    const { service = null } = props;
 	const classes = useStyles();
 
 	return (
@@ -33,7 +33,7 @@ export default function TabContent(props) {
 					alignItems="center"
 					spacing={2}
 				>
-					<props.service.icon className={classes.serviceIcon} />
+					<service.icon className={classes.serviceIcon} />
 					<Stack
 						direction="column"
 						justifyContent="center"
@@ -44,9 +44,9 @@ export default function TabContent(props) {
 							variant="h1"
 							className={classes.serviceName}
 						>
-							{props.service.name}
+							{service.name}
 						</Typography>
-						<Typography>v{props.service.version}</Typography>
+						<Typography>v{service.version}</Typography>
 					</Stack>
 				</Stack>
 			</Grid>
@@ -63,20 +63,12 @@ export default function TabContent(props) {
 					<Link
 						color="secondary"
 						target="_blank"
-						href={props.service.author.maintainer.link}
+						href={service.author.maintainer.link}
 					>
-						{props.service.author.maintainer.name}
+						{service.author.maintainer.name}
 					</Link>
 				</Typography>
 			</Grid>
 		</Grid>
 	);
 }
-
-TabContent.defaultProps = {
-	service: null,
-};
-
-TabContent.propTypes = {
-	service: PropTypes.object.isRequired,
-};

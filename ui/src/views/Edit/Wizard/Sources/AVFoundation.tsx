@@ -25,17 +25,18 @@ function initSettings(initialSettings) {
 }
 
 function Source(props) {
+    const { knownDevices = [], settings: _settings = {}, onChange = function (type, settings, inputs, ready) {}, onRefresh = function () {} } = props;
 	const { i18n } = useLingui();
-	const settings = initSettings(props.settings);
+	const settings = initSettings(_settings);
 
 	const handleChange = (newSettings) => {
 		newSettings = newSettings || settings;
 
-		const filteredDevices = props.knownDevices.filter(
+		const filteredDevices = knownDevices.filter(
 			(device) => device.media === 'video',
 		);
 
-		props.onChange(
+		onChange(
 			S.id,
 			newSettings,
 			S.func.createInputs(newSettings),
@@ -44,7 +45,7 @@ function Source(props) {
 	};
 
 	const handleRefresh = () => {
-		props.onRefresh();
+		onRefresh();
 	};
 
 	const update = (what) => (event) => {
@@ -63,7 +64,7 @@ function Source(props) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	let filteredDevices = props.knownDevices.filter(
+	let filteredDevices = knownDevices.filter(
 		(device) => device.media === 'video',
 	);
 	let options = filteredDevices.map((device) => {
@@ -98,7 +99,7 @@ function Source(props) {
 		</Select>
 	);
 
-	filteredDevices = props.knownDevices.filter(
+	filteredDevices = knownDevices.filter(
 		(device) => device.media === 'audio',
 	);
 	options = filteredDevices.map((device) => {
@@ -165,13 +166,6 @@ function Source(props) {
 		</React.Fragment>
 	);
 }
-
-Source.defaultProps = {
-	knownDevices: [],
-	settings: {},
-	onChange: function (type, settings, inputs, ready) {},
-	onRefresh: function () {},
-};
 
 function SourceIcon(props) {
 	return <Icon style={{ color: '#FFF' }} {...props} />;

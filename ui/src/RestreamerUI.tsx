@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RestreamerUI(props) {
+    const { address = '' } = props;
 	const classes = useStyles();
 
 	const [$state, setState] = React.useState<any>({
@@ -122,7 +123,7 @@ export default function RestreamerUI(props) {
 	};
 
 	const handleMount = async () => {
-		restreamer.current = new Restreamer(props.address);
+		restreamer.current = new Restreamer(address);
 		restreamer.current.AddListener((event) => {
 			notify(event.severity, event.type, event.message);
 		});
@@ -630,7 +631,3 @@ export default function RestreamerUI(props) {
 		</I18n>
 	);
 }
-
-RestreamerUI.defaultProps = {
-	address: '',
-};

@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Component(props) {
+    const { label = '', checked = false, disabled = false, onChange = function (event) {} } = props;
 	const classes = useStyles();
 
 	return (
@@ -27,19 +28,12 @@ export default function Component(props) {
 			control={
 				<Checkbox
 					className={classes.root}
-					checked={props.checked}
-					onChange={props.onChange}
+					checked={checked}
+					onChange={onChange}
 				/>
 			}
-			label={props.label}
-			disabled={props.disabled}
+			label={label}
+			disabled={disabled}
 		/>
 	);
 }
-
-Component.defaultProps = {
-	label: '',
-	checked: false,
-	disabled: false,
-	onChange: function (event) {},
-};

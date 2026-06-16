@@ -54,13 +54,14 @@ function initDevices(initialDevices) {
 }
 
 function Source(props) {
-	const settings = initSettings(props.settings, props.knownDevices);
-	const devices = initDevices(props.knownDevices);
+    const { knownDevices = [], settings: _settings = {}, onChange = function (type, settings, inputs, ready) {} } = props;
+	const settings = initSettings(_settings, knownDevices);
+	const devices = initDevices(knownDevices);
 
 	const handleChange = (newSettings) => {
 		newSettings = newSettings || settings;
 
-		props.onChange(
+		onChange(
 			S.id,
 			newSettings,
 			S.func.createInputs(newSettings),
@@ -115,12 +116,6 @@ function Source(props) {
 		</React.Fragment>
 	);
 }
-
-Source.defaultProps = {
-	knownDevices: [],
-	settings: {},
-	onChange: function (type, settings, inputs, ready) {},
-};
 
 function SourceIcon(props) {
 	return (

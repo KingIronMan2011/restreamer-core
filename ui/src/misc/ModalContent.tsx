@@ -55,7 +55,7 @@ const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
 	(props, ref) => {
 		const classes = useStyles();
 
-		const { title, onClose, onHelp, ...other } = props;
+		const { title = '', onClose = null, onHelp = null, ...other } = props;
 
 		return (
 			<Paper
@@ -74,7 +74,7 @@ const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
 							spacing={2}
 						>
 							<Typography variant="button">
-								{props.title}
+								{title}
 							</Typography>
 							<Stack
 								direction="row"
@@ -82,20 +82,20 @@ const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
 								alignItems="center"
 								spacing={2}
 							>
-								{typeof props.onHelp === 'function' && (
+								{typeof onHelp === 'function' && (
 									<IconButton
 										color="inherit"
 										size="small"
-										onClick={props.onHelp}
+										onClick={onHelp}
 									>
 										<HelpIcon fontSize="small" />
 									</IconButton>
 								)}
-								{typeof props.onClose === 'function' && (
+								{typeof onClose === 'function' && (
 									<IconButton
 										color="inherit"
 										size="small"
-										onClick={props.onClose}
+										onClick={onClose}
 									>
 										<CloseIcon fontSize="small" />
 									</IconButton>
@@ -110,7 +110,7 @@ const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
 						<Button
 							variant="outlined"
 							color="default"
-							onClick={props.onClose}
+							onClick={onClose}
 						>
 							<Trans>Close</Trans>
 						</Button>
@@ -122,9 +122,3 @@ const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
 );
 
 export default Component;
-
-Component.defaultProps = {
-	title: '',
-	onClose: null,
-	onHelp: null,
-};

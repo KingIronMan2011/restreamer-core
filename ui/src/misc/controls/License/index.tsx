@@ -29,12 +29,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function License(props) {
+    const { license = 'none', onChange = function (license) {} } = props;
 	const classes = useStyles();
 
 	const { i18n } = useLingui();
 
 	const handleLicenseChange = (event) => {
-		props.onChange(event.target.value);
+		onChange(event.target.value);
 	};
 
 	let image = null;
@@ -44,12 +45,12 @@ export default function License(props) {
 	const reVersion = new RegExp('[0-9]+.[0-9]+$');
 
 	let version = '4.0';
-	const matches = props.license.match(reVersion);
+	const matches = license.match(reVersion);
 	if (matches !== null) {
 		version = matches[0];
 	}
 
-	const which = props.license.replace(reVersion, '').trim();
+	const which = license.replace(reVersion, '').trim();
 
 	switch (which) {
 		case 'CC0':
@@ -110,7 +111,7 @@ export default function License(props) {
 			<Grid item xs={12}>
 				<Select
 					label={<Trans>Creative Commons</Trans>}
-					value={props.license}
+					value={license}
 					onChange={handleLicenseChange}
 				>
 					<MenuItem value="none">none</MenuItem>
@@ -143,15 +144,10 @@ export default function License(props) {
 			{image !== null && (
 				<Grid item xs={12}>
 					<Link href={link} target="_blank" rel="noopener noreferrer">
-						<img src={image} alt={props.license} />
+						<img src={image} alt={license} />
 					</Link>
 				</Grid>
 			)}
 		</Grid>
 	);
 }
-
-License.defaultProps = {
-	license: 'none',
-	onChange: function (license) {},
-};

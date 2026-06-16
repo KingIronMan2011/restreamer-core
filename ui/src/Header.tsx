@@ -161,13 +161,14 @@ const StyledMenu = styled((props: React.ComponentProps<typeof Menu>) => (
 }));
 
 function AboutModal(props) {
+    const { open = false, onClose = () => {} } = props;
 	const classes = useStyles();
 
 	return (
-		<Modal open={props.open} onClose={props.onClose} className="modal">
+		<Modal open={open} onClose={onClose} className="modal">
 			<ModalContent
 				title="About datarhei Restreamer"
-				onClose={props.onClose}
+				onClose={onClose}
 				className={classes.modalPaper}
 			>
 				<Grid container spacing={1}>
@@ -245,12 +246,8 @@ function AboutModal(props) {
 	);
 }
 
-AboutModal.defaultProps = {
-	open: false,
-	onClose: () => {},
-};
-
 function HeaderMenu(props) {
+    const { onChannel = () => {}, onPlayersite = () => {}, onSettings = () => {}, onLogout = () => {}, expand = false, showPlayersite = false, showSettings = false, hasUpdates = false, hasService = false } = props;
 	const classes = useStyles();
 
 	const [$anchorEl, setAnchorEl] = React.useState(null);
@@ -268,19 +265,19 @@ function HeaderMenu(props) {
 		Storage.Set('language', language);
 	};
 
-	if (props.expand === true) {
+	if (expand === true) {
 		return (
 			<React.Fragment>
 				<Fab
 					className="headerFab"
 					color="primary"
-					onClick={props.onChannel}
+					onClick={onChannel}
 				>
 					<VideocamIcon className="fabIcon" />
 				</Fab>
 				<Fab
 					className={
-						props.hasUpdates ? 'headerFabHighlight' : 'headerFab'
+						hasUpdates ? 'headerFabHighlight' : 'headerFab'
 					}
 					color="primary"
 					onClick={handleMenuOpen}
@@ -294,7 +291,7 @@ function HeaderMenu(props) {
 					onClick={handleMenuClose}
 					disableScrollLock
 				>
-					{props.hasService === true && (
+					{hasService === true && (
 						<React.Fragment>
 							<MenuItem
 								component="a"
@@ -309,21 +306,21 @@ function HeaderMenu(props) {
 							<Divider />
 						</React.Fragment>
 					)}
-					{props.showPlayersite === true && (
-						<MenuItem onClick={props.onPlayersite}>
+					{showPlayersite === true && (
+						<MenuItem onClick={onPlayersite}>
 							<ListItemIcon>
 								<WebIcon fontSize="small" />
 							</ListItemIcon>
 							<Trans>Playersite</Trans>
 						</MenuItem>
 					)}
-					{props.showSettings === true && (
-						<MenuItem onClick={props.onSettings}>
+					{showSettings === true && (
+						<MenuItem onClick={onSettings}>
 							<ListItemIcon>
 								<Settings
 									fontSize="small"
 									className={
-										props.hasUpdates
+										hasUpdates
 											? classes.colorHighlight
 											: ''
 									}
@@ -365,7 +362,7 @@ function HeaderMenu(props) {
 						</ListItemIcon>
 						<LanguageSelect onChange={handleLanguageChange} />
 					</MenuItem>
-					<MenuItem onClick={props.onLogout}>
+					<MenuItem onClick={onLogout}>
 						<ListItemIcon>
 							<Logout fontSize="small" />
 						</ListItemIcon>
@@ -430,19 +427,8 @@ function HeaderMenu(props) {
 	}
 }
 
-HeaderMenu.defaultProps = {
-	onChannel: () => {},
-	onPlayersite: () => {},
-	onSettings: () => {},
-	onLogout: () => {},
-	expand: false,
-	showPlayersite: false,
-	showSettings: false,
-	hasUpdates: false,
-	hasService: false,
-};
-
 export default function Header(props) {
+    const { expand = false } = props;
 	const classes = useStyles();
 
 	return (
@@ -484,7 +470,3 @@ export default function Header(props) {
 		</Grid>
 	);
 }
-
-Header.defaultProps = {
-	expand: false,
-};
