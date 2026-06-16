@@ -20,7 +20,7 @@ export default function Component(props) {
 	const notify = useContext(NotifyContext);
 	const textAreaRef = React.createRef<HTMLTextAreaElement>();
 
-	const { content } = props;
+	const { content, title = '', rows = 20, value = '', readOnly = true, allowCopy: allowCopyProp = true, allowModal: allowModalProp = false, allowDownload: allowDownloadProp = false, downloadName = '', disabled = false, scrollTo: scrollToProp = 'top', onChange = function (value) {}, onHelp = null } = props;
 
 	React.useEffect(() => {
 		scrollTo();
@@ -73,7 +73,7 @@ export default function Component(props) {
 	};
 
 	const scrollTo = () => {
-		if (props.scrollTo === 'bottom') {
+		if (scrollToProp === 'bottom') {
 			textAreaRef.current.scrollTop = textAreaRef.current.scrollHeight;
 		}
 
@@ -84,9 +84,9 @@ export default function Component(props) {
 		const element = document.createElement('a');
 		element.setAttribute(
 			'href',
-			'data:text/plain;charset=utf-8,' + encodeURIComponent(props.value),
+			'data:text/plain;charset=utf-8,' + encodeURIComponent(value),
 		);
-		element.setAttribute('download', props.downloadName);
+		element.setAttribute('download', downloadName);
 
 		element.style.display = 'none';
 		document.body.appendChild(element);
@@ -96,21 +96,21 @@ export default function Component(props) {
 		document.body.removeChild(element);
 	};
 
-	let allowCopy = props.allowCopy;
-	if (props.value.length === 0 || props.disabled === true) {
+	let allowCopy = allowCopyProp;
+	if (value.length === 0 || disabled === true) {
 		allowCopy = false;
 	}
 
-	let allowModal = props.allowModal;
-	if (props.value.length === 0 || props.disabled === true) {
+	let allowModal = allowModalProp;
+	if (value.length === 0 || disabled === true) {
 		allowModal = false;
 	}
 
-	let allowDownload = props.allowDownload;
+	let allowDownload = allowDownloadProp;
 	if (
-		props.value.length === 0 ||
-		props.disabled === true ||
-		props.downloadName.length === 0
+		value.length === 0 ||
+		disabled === true ||
+		downloadName.length === 0
 	) {
 		allowDownload = false;
 	}
@@ -127,10 +127,10 @@ export default function Component(props) {
 		padding: '0.5em',
 		backgroundColor: Palette.background.footer1,
 	};
-	if (props.rows === 1) {
+	if (rows === 1) {
 		textAreaStyle = {
 			...textAreaStyle,
-			height: 18 * props.rows + 9.5 + 'px',
+			height: 18 * rows + 9.5 + 'px',
 			overflowY: 'hidden',
 			marginBottom: '0em',
 			marginTop: '0em',
@@ -148,7 +148,7 @@ export default function Component(props) {
 	} else {
 		textAreaStyle = {
 			...textAreaStyle,
-			height: 18 * props.rows + 8 + 'px',
+			height: 18 * rows + 8 + 'px',
 		};
 		textAreaDivStyle = {
 			...textAreaDivStyle,
@@ -208,42 +208,27 @@ export default function Component(props) {
 				<textarea
 					style={textAreaStyle}
 					ref={textAreaRef}
-					rows={props.rows}
-					value={props.value}
-					readOnly={props.readOnly}
-					disabled={props.disabled}
-					onChange={props.onChange}
+					rows={rows}
+					value={value}
+					readOnly={readOnly}
+					disabled={disabled}
+					onChange={onChange}
 				/>
 			</Stack>
 			<TextareaModal
 				open={$modal}
 				onClose={handleModal}
-				title={props.title}
-				onHelp={props.onHelp}
-				rows={props.rows}
-				value={props.value}
-				readOnly={props.readOnly}
-				disabled={props.disabled}
-				onChange={props.onChange}
-				scrollTo={props.scrollTo}
+				title={title}
+				onHelp={onHelp}
+				rows={rows}
+				value={value}
+				readOnly={readOnly}
+				disabled={disabled}
+				onChange={onChange}
+				scrollTo={scrollToProp}
 				{...props}
 				allowModal={false}
 			/>
 		</React.Fragment>
 	);
 }
-
-Component.defaultProps = {
-	title: '',
-	rows: 20,
-	value: '',
-	readOnly: true,
-	allowCopy: true,
-	allowModal: false,
-	allowDownload: false,
-	downloadName: '',
-	disabled: false,
-	scrollTo: 'top',
-	onChange: function (value) {},
-	onHelp: null,
-};

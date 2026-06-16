@@ -11,20 +11,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Component(props) {
+    const { image = '', title = '', height = '0px' } = props;
 	const classes = useStyles();
 
 	return (
 		<CardMedia
 			className={classes.media}
-			style={{ height: props.height }}
-			image={props.image}
-			title={props.title}
+			style={{ height: height }}
+			image={image}
+			title={title}
 		/>
 	);
 }
-
-Component.defaultProps = {
-	image: '',
-	title: '',
-	height: '0px',
-};

@@ -114,18 +114,22 @@ const formatLogline = (entry) => {
 };
 
 const Component = function (props) {
+    const { open = false, title = '', progress = {}, logdata: _logdata = {
+    		prelude: [],
+    		log: [],
+    	}, onClose = null, onHelp = null } = props;
 	const classes = useStyles();
 	const logdata = initLogdata({
-		...props.logdata,
-		command: props.progress?.command,
+		..._logdata,
+		command: progress?.command,
 	});
 
 	return (
-		<Modal open={props.open} onClose={props.onClose} className="modal">
+		<Modal open={open} onClose={onClose} className="modal">
 			<ModalContent
-				title={props.title}
-				onClose={props.onClose}
-				onHelp={props.onHelp}
+				title={title}
+				onClose={onClose}
+				onHelp={onHelp}
 			>
 				<Grid container spacing={1}>
 					<Grid item xs={12} md={8} lg={10}>
@@ -210,8 +214,8 @@ const Component = function (props) {
 						</Grid>
 					</Grid>
 					<Grid item xs={12} md={4} lg={2}>
-						{props.progress !== null && (
-							<Progress {...props.progress} />
+						{progress !== null && (
+							<Progress {...progress} />
 						)}
 					</Grid>
 				</Grid>
@@ -221,15 +225,3 @@ const Component = function (props) {
 };
 
 export default Component;
-
-Component.defaultProps = {
-	open: false,
-	title: '',
-	progress: {},
-	logdata: {
-		prelude: [],
-		log: [],
-	},
-	onClose: null,
-	onHelp: null,
-};

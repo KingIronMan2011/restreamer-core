@@ -75,9 +75,10 @@ const createInputs = (settings) => {
 };
 
 function Source(props) {
+    const { knownDevices = [], settings: _settings = {}, onChange = function (settings) {}, onProbe = function (settings, inputs) {}, onRefresh = function () {} } = props;
 	const classes = useStyles();
 	const { i18n } = useLingui();
-	const settings = initSettings(props.settings);
+	const settings = initSettings(_settings);
 
 	const handleChange = (what) => (event) => {
 		const data = {};
@@ -88,21 +89,21 @@ function Source(props) {
 			data[what] = event.target.value;
 		}
 
-		props.onChange({
+		onChange({
 			...settings,
 			...data,
 		});
 	};
 
 	const handleRefresh = () => {
-		props.onRefresh();
+		onRefresh();
 	};
 
 	const handleProbe = () => {
-		props.onProbe(settings, createInputs(settings));
+		onProbe(settings, createInputs(settings));
 	};
 
-	let filteredDevices = props.knownDevices.filter(
+	let filteredDevices = knownDevices.filter(
 		(device) => device.media === 'video',
 	);
 	let options = filteredDevices.map((device) => {
@@ -134,7 +135,7 @@ function Source(props) {
 		/>
 	);
 
-	filteredDevices = props.knownDevices.filter(
+	filteredDevices = knownDevices.filter(
 		(device) => device.media === 'audio',
 	);
 	options = filteredDevices.map((device) => {
@@ -239,14 +240,6 @@ function Source(props) {
 		</Grid>
 	);
 }
-
-Source.defaultProps = {
-	knownDevices: [],
-	settings: {},
-	onChange: function (settings) {},
-	onProbe: function (settings, inputs) {},
-	onRefresh: function () {},
-};
 
 function SourceIcon(props) {
 	return <Icon style={{ color: '#FFF' }} {...props} />;

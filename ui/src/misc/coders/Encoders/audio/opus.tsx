@@ -59,6 +59,7 @@ function createMapping(settings, stream, skills) {
 }
 
 function Delay(props) {
+    const { variant = 'outlined', allowAuto = false, allowCustom = false, label = <Trans>Delay</Trans>, customLabel = <Trans>Custom delay</Trans>, onChange = function () {} } = props;
 	const { i18n } = useLingui();
 	const options = [
 		{ value: '20', label: '20ms' },
@@ -66,11 +67,11 @@ function Delay(props) {
 		{ value: '50', label: '50ms' },
 	];
 
-	if (props.allowAuto === true) {
+	if (allowAuto === true) {
 		options.unshift({ value: 'auto', label: 'auto' });
 	}
 
-	if (props.allowCustom === true) {
+	if (allowCustom === true) {
 		options.push({ value: 'custom', label: i18n._(t`Custom ...`) });
 	}
 
@@ -78,12 +79,12 @@ function Delay(props) {
 		<React.Fragment>
 			<SelectCustom
 				options={options}
-				label={props.label}
-				customLabel={props.customLabel}
+				label={label}
+				customLabel={customLabel}
 				value={props.value}
-				onChange={props.onChange}
-				variant={props.variant}
-				allowCustom={props.allowCustom}
+				onChange={onChange}
+				variant={variant}
+				allowCustom={allowCustom}
 			/>
 			<Typography variant="caption">
 				<Trans>Maximum delay in milliseconds.</Trans>
@@ -92,19 +93,11 @@ function Delay(props) {
 	);
 }
 
-Delay.defaultProps = {
-	variant: 'outlined',
-	allowAuto: false,
-	allowCustom: false,
-	label: <Trans>Delay</Trans>,
-	customLabel: <Trans>Custom delay</Trans>,
-	onChange: function () {},
-};
-
 function Coder(props) {
-	const settings = init(props.settings);
-	const stream = Helper.InitStream(props.stream);
-	const skills = Helper.InitSkills(props.skills);
+    const { stream: _stream = {}, settings: _settings = {}, skills: _skills = {}, onChange = function (settings, mapping) {} } = props;
+	const settings = init(_settings);
+	const stream = Helper.InitStream(_stream);
+	const skills = Helper.InitSkills(_skills);
 
 	const handleChange = (newSettings) => {
 		let automatic = false;
@@ -113,7 +106,7 @@ function Coder(props) {
 			automatic = true;
 		}
 
-		props.onChange(
+		onChange(
 			newSettings,
 			createMapping(newSettings, stream, skills),
 			automatic,
@@ -156,13 +149,6 @@ function Coder(props) {
 		</Grid>
 	);
 }
-
-Coder.defaultProps = {
-	stream: {},
-	settings: {},
-	skills: {},
-	onChange: function (settings, mapping) {},
-};
 
 const coder = 'opus';
 const name = 'Opus';

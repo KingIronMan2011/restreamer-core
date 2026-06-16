@@ -18,12 +18,13 @@ function isCustomOption(value, options) {
 }
 
 export default function Component(props) {
+    const { variant = 'outlined', label = '', value = '', disabled = false, customKey = 'custom', allowCustom = false, onChange = function (event) {} } = props;
 	const [$value, setValue] = React.useState<any>({
-		value: props.value,
-		isCustom: isCustomOption(props.value, props.options),
+		value: value,
+		isCustom: isCustomOption(value, props.options),
 		custom:
-			isCustomOption(props.value, props.options) === true
-				? props.value
+			isCustomOption(value, props.options) === true
+				? value
 				: '',
 	});
 
@@ -32,7 +33,7 @@ export default function Component(props) {
 
 		const value = $value;
 
-		value.isCustom = v === props.customKey ? true : false;
+		value.isCustom = v === customKey ? true : false;
 		if (value.isCustom === true) {
 			value.custom = value.value;
 		}
@@ -41,12 +42,12 @@ export default function Component(props) {
 		setValue({
 			...$value,
 			value: v,
-			isCustom: v === props.customKey ? true : false,
+			isCustom: v === customKey ? true : false,
 		});
 
-		props.onChange({
+		onChange({
 			target: {
-				value: v === props.customKey ? value.custom : value.value,
+				value: v === customKey ? value.custom : value.value,
 			},
 		});
 	};
@@ -57,7 +58,7 @@ export default function Component(props) {
 			custom: event.target.value,
 		});
 
-		props.onChange(event);
+		onChange(event);
 	};
 
 	const options = [];
@@ -76,22 +77,22 @@ export default function Component(props) {
 
 	return (
 		<Grid container spacing={2}>
-			{props.allowCustom === true ? (
+			{allowCustom === true ? (
 				<React.Fragment>
 					{$value.isCustom === true ? (
 						<React.Fragment>
 							<Grid item xs={6}>
-								<FormControl variant={props.variant} fullWidth>
-									<InputLabel>{props.label}</InputLabel>
+								<FormControl variant={variant} fullWidth>
+									<InputLabel>{label}</InputLabel>
 									<Select
 										value={
 											$value.isCustom === false
 												? $value.value
-												: props.customKey
+												: customKey
 										}
 										onChange={handleChange}
-										disabled={props.disabled}
-										label={props.label}
+										disabled={disabled}
+										label={label}
 									>
 										{options}
 									</Select>
@@ -99,16 +100,16 @@ export default function Component(props) {
 							</Grid>
 							<Grid item xs={6}>
 								<TextField
-									variant={props.variant}
+									variant={variant}
 									fullWidth
 									disabled={
-										props.disabled === true ||
+										disabled === true ||
 										$value.isCustom === false
 									}
 									label={
 										props.customLabel
 											? props.customLabel
-											: props.label
+											: label
 									}
 									value={$value.custom}
 									onChange={handleCustomChange}
@@ -117,17 +118,17 @@ export default function Component(props) {
 						</React.Fragment>
 					) : (
 						<Grid item xs={12}>
-							<FormControl variant={props.variant} fullWidth>
-								<InputLabel>{props.label}</InputLabel>
+							<FormControl variant={variant} fullWidth>
+								<InputLabel>{label}</InputLabel>
 								<Select
 									value={
 										$value.isCustom === false
 											? $value.value
-											: props.customKey
+											: customKey
 									}
 									onChange={handleChange}
-									disabled={props.disabled}
-									label={props.label}
+									disabled={disabled}
+									label={label}
 								>
 									{options}
 								</Select>
@@ -137,13 +138,13 @@ export default function Component(props) {
 				</React.Fragment>
 			) : (
 				<Grid item xs={12}>
-					<FormControl variant={props.variant} fullWidth>
-						<InputLabel>{props.label}</InputLabel>
+					<FormControl variant={variant} fullWidth>
+						<InputLabel>{label}</InputLabel>
 						<Select
 							value={$value.value}
 							onChange={handleChange}
-							disabled={props.disabled}
-							label={props.label}
+							disabled={disabled}
+							label={label}
 						>
 							{options}
 						</Select>
@@ -153,13 +154,3 @@ export default function Component(props) {
 		</Grid>
 	);
 }
-
-Component.defaultProps = {
-	variant: 'outlined',
-	label: '',
-	value: '',
-	disabled: false,
-	customKey: 'custom',
-	allowCustom: false,
-	onChange: function (event) {},
-};

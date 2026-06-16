@@ -10,6 +10,7 @@ import Paper from '../../../misc/Paper';
 import PaperHeader from '../../../misc/PaperHeader';
 
 export default function Source(props) {
+    const { onAbort = () => {}, onHelp = () => {}, onAdvanced = () => {}, sources = [] } = props;
 	return (
 		<Paper xs={12} sm={9} md={6} marginBottom="6em" className="PaperM">
 			<PaperHeader
@@ -17,7 +18,7 @@ export default function Source(props) {
 				variant="h1"
 				title={<Trans>Video setup</Trans>}
 				onAbort={props.Abort}
-				onHelp={props.onHelp}
+				onHelp={onHelp}
 			/>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
@@ -35,7 +36,7 @@ export default function Source(props) {
 				</Grid>
 				<Grid item xs={12}>
 					<Grid container spacing={2}>
-						{props.sources}
+						{sources}
 					</Grid>
 				</Grid>
 				<Grid item xs={12}>
@@ -46,7 +47,7 @@ export default function Source(props) {
 						variant="outlined"
 						fullWidth
 						color="default"
-						onClick={props.onAdvanced}
+						onClick={onAdvanced}
 					>
 						<Trans>Advanced setup</Trans>
 					</Button>
@@ -55,10 +56,3 @@ export default function Source(props) {
 		</Paper>
 	);
 }
-
-Source.defaultProps = {
-	onAbort: () => {},
-	onHelp: () => {},
-	onAdvanced: () => {},
-	sources: [],
-};

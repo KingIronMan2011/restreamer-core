@@ -3,9 +3,9 @@ import React from 'react';
 import FormInlineButton from './FormInlineButton';
 
 export default function UploadButton(props) {
-	const { acceptTypes, label, onError, onStart, onUpload, ...other } = props;
+	const { acceptTypes = [], label = '', onError = function () {}, onStart, onUpload = function (data, extension) {}, ...other } = props;
 
-	const accept = props.acceptTypes.map((t) => t.mimetype);
+	const accept = acceptTypes.map((t) => t.mimetype);
 
 	const handleUpload = (event) => {
 		const handler = (event) => {
@@ -13,7 +13,7 @@ export default function UploadButton(props) {
 
 			if (files.length === 0) {
 				// no files selected
-				props.onError({
+				onError({
 					type: 'nofiles',
 				});
 				return;
@@ -22,7 +22,7 @@ export default function UploadButton(props) {
 			const file = files[0];
 
 			let type = null;
-			for (const t of props.acceptTypes) {
+			for (const t of acceptTypes) {
 				const accept = t.mimetype.split('/');
 				const actual = file.type.split('/');
 
@@ -38,7 +38,7 @@ export default function UploadButton(props) {
 
 			if (type === null) {
 				// not one of the allowed mimetypes
-				props.onError({
+				onError({
 					type: 'mimetype',
 					actual: file.type,
 					allowed: accept.slice(),
@@ -48,7 +48,7 @@ export default function UploadButton(props) {
 
 			if (file.size > type.maxSize) {
 				// the file is too big
-				props.onError({
+				onError({
 					type: 'size',
 					actual: file.size,
 					allowed: type.maxSize,
@@ -61,14 +61,14 @@ export default function UploadButton(props) {
 			reader.onloadend = async () => {
 				if (reader.result === null) {
 					// reading the file failed
-					props.onError({
+					onError({
 						type: 'read',
 						message: reader.error.message,
 					});
 					return;
 				}
 
-				props.onUpload(reader.result, type.extension, type.mimetype);
+				onUpload(reader.result, type.extension, type.mimetype);
 			};
 		};
 
@@ -83,7 +83,7 @@ export default function UploadButton(props) {
 
 	return (
 		<FormInlineButton component="label" {...other}>
-			{props.label}
+			{label}
 			<input
 				accept={accept.join(',')}
 				type="file"
@@ -93,10 +93,3 @@ export default function UploadButton(props) {
 		</FormInlineButton>
 	);
 }
-
-UploadButton.defaultProps = {
-	label: '',
-	acceptTypes: [],
-	onError: function () {},
-	onUpload: function (data, extension) {},
-};

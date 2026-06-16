@@ -5,14 +5,15 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 export default function Component(props) {
+    const { variant = 'outlined', label = '', value = '', disabled = false, onChange = function (event) {} } = props;
 	return (
-		<FormControl variant={props.variant} fullWidth>
-			<InputLabel>{props.label}</InputLabel>
+		<FormControl variant={variant} fullWidth>
+			<InputLabel>{label}</InputLabel>
 			<Select
-				value={props.value}
-				onChange={props.onChange}
-				disabled={props.disabled}
-				label={props.label}
+				value={value}
+				onChange={onChange}
+				disabled={disabled}
+				label={label}
 				MenuProps={{ disableScrollLock: true }}
 			>
 				{props.children}
@@ -20,11 +21,3 @@ export default function Component(props) {
 		</FormControl>
 	);
 }
-
-Component.defaultProps = {
-	variant: 'outlined',
-	label: '',
-	value: '',
-	disabled: false,
-	onChange: function (event) {},
-};

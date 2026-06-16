@@ -1,8 +1,6 @@
 // @ts-nocheck
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
-
 import { useLingui } from '@lingui/react';
 import { useTheme } from '@mui/material/styles';
 import { Trans, t } from '@lingui/macro';
@@ -52,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Add(props) {
+    const { restreamer = null } = props;
 	const theme = useTheme();
 	const breakpointUpSm = useMediaQuery(theme.breakpoints.up('sm'));
 	const classes = useStyles();
@@ -89,16 +88,16 @@ export default function Add(props) {
 	}, [navigate, $invalid]);
 
 	const load = async () => {
-		const channelid = props.restreamer.SelectChannel(_channelid);
+		const channelid = restreamer.SelectChannel(_channelid);
 		if (channelid === '' || channelid !== _channelid) {
 			setInvalid(true);
 			return;
 		}
 
-		const skills = await props.restreamer.Skills();
+		const skills = await restreamer.Skills();
 		setSkills(skills);
 
-		const ingest = await props.restreamer.GetIngestMetadata(_channelid);
+		const ingest = await restreamer.GetIngestMetadata(_channelid);
 		setMetadata({
 			...$metadata,
 			name: ingest.meta.name,
@@ -258,7 +257,7 @@ export default function Add(props) {
 			return;
 		}
 
-		const [id, err] = await props.restreamer.CreateEgress(
+		const [id, err] = await restreamer.CreateEgress(
 			_channelid,
 			$service,
 			global,
@@ -278,7 +277,7 @@ export default function Add(props) {
 			return;
 		}
 
-		await props.restreamer.SetEgressMetadata(_channelid, id, $settings);
+		await restreamer.SetEgressMetadata(_channelid, id, $settings);
 
 		let message = i18n._(t`The publication service has been created`);
 		if ($settings.name.length !== 0) {
@@ -752,11 +751,3 @@ export default function Add(props) {
 		</React.Fragment>
 	);
 }
-
-Add.defaultProps = {
-	restreamer: null,
-};
-
-Add.propTypes = {
-	restreamer: PropTypes.object.isRequired,
-};

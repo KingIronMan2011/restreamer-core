@@ -58,9 +58,10 @@ const createInputs = (settings) => {
 };
 
 function Source(props) {
+    const { knownDevices = [], settings: _settings = {}, onChange = function (settings) {}, onProbe = function (settings, inputs) {} } = props;
 	const classes = useStyles();
 	const { i18n } = useLingui();
-	const settings = initSettings(props.settings);
+	const settings = initSettings(_settings);
 
 	const handleChange = (what) => (event) => {
 		const data = {};
@@ -69,7 +70,7 @@ function Source(props) {
 			data[what] = event.target.value;
 		}
 
-		props.onChange({
+		onChange({
 			...settings,
 			...data,
 		});
@@ -80,10 +81,10 @@ function Source(props) {
 	};
 
 	const handleProbe = () => {
-		props.onProbe(settings, createInputs(settings));
+		onProbe(settings, createInputs(settings));
 	};
 
-	const filteredDevices = props.knownDevices.filter(
+	const filteredDevices = knownDevices.filter(
 		(device) => device.media === 'video',
 	);
 	const options = filteredDevices.map((device) => {
@@ -161,13 +162,6 @@ function Source(props) {
 		</Grid>
 	);
 }
-
-Source.defaultProps = {
-	knownDevices: [],
-	settings: {},
-	onChange: function (settings) {},
-	onProbe: function (settings, inputs) {},
-};
 
 function SourceIcon(props) {
 	return (

@@ -1,13 +1,14 @@
 import React from 'react';
 
 export default function Duration(props) {
-	const fullSeconds = Math.floor(props.seconds);
+    const { seconds = 0 } = props;
+	const fullSeconds = Math.floor(seconds);
 	const s = fullSeconds % 60;
 	const m = Math.floor(fullSeconds / 60) % 60;
 	const h = Math.floor(fullSeconds / (60 * 60)) % 24;
 	const d = Math.floor(fullSeconds / (60 * 60 * 24));
 
-	let duration = '.' + ((props.seconds - fullSeconds) * 100).toFixed(0);
+	let duration = '.' + ((seconds - fullSeconds) * 100).toFixed(0);
 
 	if (s < 10) {
 		duration = ':0' + s + duration;
@@ -33,7 +34,3 @@ export default function Duration(props) {
 
 	return <React.Fragment>{duration}</React.Fragment>;
 }
-
-Duration.defaultProps = {
-	seconds: 0,
-};

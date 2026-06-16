@@ -37,6 +37,7 @@ function init(props) {
 }
 
 export default function Progress(props) {
+    const { time = 0, fps = 0, bitrate = 0, q = -1, speed = 0, drop = 0, dup = 0, frame = 0 } = props;
 	const classes = useStyles();
 
 	const progress = init(props);
@@ -153,7 +154,7 @@ export default function Progress(props) {
 					<strong>
 						<Number
 							value={
-								!isNaN((props.drop * 100) / props.frames) || 0
+								!isNaN((drop * 100) / props.frames) || 0
 							}
 							digits={2}
 							minDigits={2}
@@ -181,14 +182,3 @@ export default function Progress(props) {
 		</Grid>
 	);
 }
-
-Progress.defaultProps = {
-	time: 0,
-	fps: 0,
-	bitrate: 0,
-	q: -1,
-	speed: 0,
-	drop: 0,
-	dup: 0,
-	frame: 0,
-};

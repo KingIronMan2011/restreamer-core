@@ -68,7 +68,8 @@ function init(settings) {
 }
 
 function Service(props) {
-	const settings = init(props.settings);
+    const { settings: _settings = {}, skills = {}, metadata = {}, streams = [], onChange = function (output, settings) {} } = props;
+	const settings = init(_settings);
 
 	const handleChange = (what) => (event) => {
 		const value = event.target.value;
@@ -77,7 +78,7 @@ function Service(props) {
 
 		const output = createOutput(settings);
 
-		props.onChange([output], settings);
+		onChange([output], settings);
 	};
 
 	const createOutput = (settings) => {
@@ -129,14 +130,6 @@ function Service(props) {
 		</Grid>
 	);
 }
-
-Service.defaultProps = {
-	settings: {},
-	skills: {},
-	metadata: {},
-	streams: [],
-	onChange: function (output, settings) {},
-};
 
 export {
 	id,

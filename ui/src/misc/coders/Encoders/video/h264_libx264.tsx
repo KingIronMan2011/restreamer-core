@@ -78,11 +78,12 @@ function createMapping(settings, stream, skills) {
 }
 
 function Preset(props) {
+    const { value = '', onChange = function (event) {} } = props;
 	return (
 		<Select
 			label={<Trans>Preset</Trans>}
-			value={props.value}
-			onChange={props.onChange}
+			value={value}
+			onChange={onChange}
 		>
 			<MenuItem value="ultrafast">ultrafast</MenuItem>
 			<MenuItem value="superfast">superfast</MenuItem>
@@ -97,17 +98,13 @@ function Preset(props) {
 	);
 }
 
-Preset.defaultProps = {
-	value: '',
-	onChange: function (event) {},
-};
-
 function Tune(props) {
+    const { value = '', onChange = function (event) {} } = props;
 	return (
 		<Select
 			label={<Trans>Tune</Trans>}
-			value={props.value}
-			onChange={props.onChange}
+			value={value}
+			onChange={onChange}
 		>
 			<MenuItem value="none">none</MenuItem>
 			<MenuItem value="animation">animation</MenuItem>
@@ -120,15 +117,11 @@ function Tune(props) {
 	);
 }
 
-Tune.defaultProps = {
-	value: '',
-	onChange: function (event) {},
-};
-
 function Coder(props) {
-	const settings = init(props.settings);
-	const stream = Helper.InitStream(props.stream);
-	const skills = Helper.InitSkills(props.skills);
+    const { stream: _stream = {}, settings: _settings = {}, skills: _skills = {}, onChange = function (settings, mapping) {} } = props;
+	const settings = init(_settings);
+	const stream = Helper.InitStream(_stream);
+	const skills = Helper.InitSkills(_skills);
 
 	const handleChange = (newSettings) => {
 		let automatic = false;
@@ -137,7 +130,7 @@ function Coder(props) {
 			automatic = true;
 		}
 
-		props.onChange(
+		onChange(
 			newSettings,
 			createMapping(newSettings, stream, skills),
 			automatic,
@@ -205,13 +198,6 @@ function Coder(props) {
 		</Grid>
 	);
 }
-
-Coder.defaultProps = {
-	stream: {},
-	settings: {},
-	skills: {},
-	onChange: function (settings, mapping) {},
-};
 
 const coder = 'libx264';
 const name = 'H.264 (libx264)';

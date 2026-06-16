@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Component(props) {
+    const {  } = props;
 	const classes = useStyles();
 
 	return (
@@ -28,5 +29,3 @@ export default function Component(props) {
 		</Stack>
 	);
 }
-
-Component.defaultProps = {};

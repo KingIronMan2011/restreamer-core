@@ -69,6 +69,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Resources(props) {
+    const { resources = () => {
+    		return null;
+    	} } = props;
 	const classes = useStyles();
 	const [$popover, setPopover] = React.useState(null);
 	const [$resources, setResources] = React.useState(null);
@@ -95,7 +98,7 @@ function Resources(props) {
 	}, []);
 
 	const update = async () => {
-		const resources = await props.resources();
+		const resources = await resources();
 		if (resources === null) {
 			return;
 		}
@@ -455,12 +458,6 @@ function Resources(props) {
 	);
 }
 
-Resources.defaultProps = {
-	resources: () => {
-		return null;
-	},
-};
-
 const initVersion = (initialVersion) => {
 	if (!initialVersion) {
 		initialVersion = {};
@@ -476,10 +473,13 @@ const initVersion = (initialVersion) => {
 };
 
 export default function Footer(props) {
+    const { expand = false, app = '', name = '', version: _version = initVersion({}), resources = () => {
+    		return null;
+    	} } = props;
 	const classes = useStyles();
-	const version = initVersion(props.version);
+	const version = initVersion(_version);
 
-	if (props.expand === true) {
+	if (expand === true) {
 		return (
 			<Grid
 				container
@@ -503,11 +503,11 @@ export default function Footer(props) {
 						>
 							<Logo className={classes.logo} />
 							<Typography className="footerVersion">
-								{props.app} v{version.number} ({version.arch}){' '}
-								{props.name ? '- ' + props.name : ''}
+								{app} v{version.number} ({version.arch}){' '}
+								{name ? '- ' + name : ''}
 							</Typography>
 						</Stack>
-						<Resources resources={props.resources} />
+						<Resources resources={resources} />
 					</Stack>
 				</Grid>
 			</Grid>
@@ -542,13 +542,3 @@ export default function Footer(props) {
 		);
 	}
 }
-
-Footer.defaultProps = {
-	expand: false,
-	app: '',
-	name: '',
-	version: initVersion({}),
-	resources: () => {
-		return null;
-	},
-};

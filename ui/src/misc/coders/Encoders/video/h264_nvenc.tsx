@@ -74,11 +74,12 @@ function createMapping(settings, stream, skills) {
 }
 
 function Preset(props) {
+    const { value = '', onChange = function (event) {} } = props;
 	return (
 		<Select
 			label={<Trans>Preset</Trans>}
-			value={props.value}
-			onChange={props.onChange}
+			value={value}
+			onChange={onChange}
 		>
 			<MenuItem value="default">default</MenuItem>
 			<MenuItem value="slow">slow</MenuItem>
@@ -97,17 +98,13 @@ function Preset(props) {
 	);
 }
 
-Preset.defaultProps = {
-	value: '',
-	onChange: function (event) {},
-};
-
 function Profile(props) {
+    const { value = '', onChange = function (event) {} } = props;
 	return (
 		<Select
 			label={<Trans>Profile</Trans>}
-			value={props.value}
-			onChange={props.onChange}
+			value={value}
+			onChange={onChange}
 		>
 			<MenuItem value="auto">auto</MenuItem>
 			<MenuItem value="baseline">baseline</MenuItem>
@@ -118,17 +115,13 @@ function Profile(props) {
 	);
 }
 
-Profile.defaultProps = {
-	value: '',
-	onChange: function (event) {},
-};
-
 function Level(props) {
+    const { value = '', onChange = function (event) {} } = props;
 	return (
 		<Select
 			label={<Trans>Level</Trans>}
-			value={props.value}
-			onChange={props.onChange}
+			value={value}
+			onChange={onChange}
 		>
 			<MenuItem value="auto">auto</MenuItem>
 			<MenuItem value="1">1</MenuItem>
@@ -157,17 +150,13 @@ function Level(props) {
 	);
 }
 
-Level.defaultProps = {
-	value: '',
-	onChange: function (event) {},
-};
-
 function RateControl(props) {
+    const { value = '', onChange = function (event) {} } = props;
 	return (
 		<Select
 			label={<Trans>Rate control</Trans>}
-			value={props.value}
-			onChange={props.onChange}
+			value={value}
+			onChange={onChange}
 		>
 			<MenuItem value="auto">auto</MenuItem>
 			<MenuItem value="constqp">constqp</MenuItem>
@@ -180,15 +169,11 @@ function RateControl(props) {
 	);
 }
 
-RateControl.defaultProps = {
-	value: '',
-	onChange: function (event) {},
-};
-
 function Coder(props) {
-	const settings = init(props.settings);
-	const stream = Helper.InitStream(props.stream);
-	const skills = Helper.InitSkills(props.skills);
+    const { stream: _stream = {}, settings: _settings = {}, skills: _skills = {}, onChange = function (settings, mapping) {} } = props;
+	const settings = init(_settings);
+	const stream = Helper.InitStream(_stream);
+	const skills = Helper.InitSkills(_skills);
 
 	const handleChange = (newSettings) => {
 		let automatic = false;
@@ -197,7 +182,7 @@ function Coder(props) {
 			automatic = true;
 		}
 
-		props.onChange(
+		onChange(
 			newSettings,
 			createMapping(newSettings, stream, skills),
 			automatic,
@@ -260,13 +245,6 @@ function Coder(props) {
 		</Grid>
 	);
 }
-
-Coder.defaultProps = {
-	stream: {},
-	settings: {},
-	skills: {},
-	onChange: function (settings, mapping) {},
-};
 
 const coder = 'h264_nvenc';
 const name = 'H.264 (NVENC)';

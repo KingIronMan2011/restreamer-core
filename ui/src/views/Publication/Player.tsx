@@ -65,11 +65,12 @@ const posterImageTypes = [
 ];
 
 export default function Edit(props) {
+    const { restreamer = null } = props;
 	const classes = useStyles();
 	const navigate = useNavigate();
 	const { channelid: _channelid } = useParams();
 	const { i18n } = useLingui();
-	const address = props.restreamer.Address();
+	const address = restreamer.Address();
 	const timeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const notify = React.useContext(NotifyContext);
 	const [$player] = React.useState('videojs-public');
@@ -101,13 +102,13 @@ export default function Edit(props) {
 	}, [navigate, $invalid]);
 
 	const mount = async () => {
-		const channelid = props.restreamer.SelectChannel(_channelid);
+		const channelid = restreamer.SelectChannel(_channelid);
 		if (channelid === '' || channelid !== _channelid) {
 			setInvalid('/');
 			return;
 		}
 
-		const proc = await props.restreamer.GetIngest(channelid, [
+		const proc = await restreamer.GetIngest(channelid, [
 			'state',
 			'metadata',
 		]);
@@ -123,7 +124,7 @@ export default function Edit(props) {
 
 		setMetadata(proc.metadata);
 		setState(proc.progress.state);
-		setSettings(props.restreamer.InitPlayerSettings(proc.metadata.player));
+		setSettings(restreamer.InitPlayerSettings(proc.metadata.player));
 
 		setReady(true);
 	};
@@ -173,7 +174,7 @@ export default function Edit(props) {
 		};
 
 	const handleLogoUpload = async (data, extension) => {
-		const path = await props.restreamer.UploadLogo(
+		const path = await restreamer.UploadLogo(
 			_channelid,
 			data,
 			extension,
@@ -192,7 +193,7 @@ export default function Edit(props) {
 	};
 
 	const handlePosterUpload = async (data, extension) => {
-		const path = await props.restreamer.UploadPoster(
+		const path = await restreamer.UploadPoster(
 			_channelid,
 			data,
 			extension,
@@ -322,8 +323,8 @@ export default function Edit(props) {
 			player: $settings,
 		};
 
-		await props.restreamer.SetIngestMetadata(_channelid, metadata);
-		await props.restreamer.UpdatePlayer(_channelid);
+		await restreamer.SetIngestMetadata(_channelid, metadata);
+		await restreamer.UpdatePlayer(_channelid);
 
 		setSaving(false);
 
@@ -369,18 +370,18 @@ export default function Edit(props) {
 	}
 
 	const storage = $metadata.control.hls.storage;
-	const manifest = props.restreamer.GetChannelAddress(
+	const manifest = restreamer.GetChannelAddress(
 		'hls+' + storage,
 		_channelid,
 	);
 	const poster = $settings.poster
 		? prepareUrl($settings.poster)
-		: props.restreamer.GetChannelAddress('snapshot+' + storage, _channelid);
-	const playerAddress = props.restreamer.GetPublicAddress(
+		: restreamer.GetChannelAddress('snapshot+' + storage, _channelid);
+	const playerAddress = restreamer.GetPublicAddress(
 		'player',
 		_channelid,
 	);
-	const iframeCode = props.restreamer.GetPublicIframeCode(_channelid);
+	const iframeCode = restreamer.GetPublicIframeCode(_channelid);
 	const logo = { ...$settings.logo, image: prepareUrl($settings.logo.image) };
 
 	return (
@@ -723,7 +724,3 @@ export default function Edit(props) {
 		</React.Fragment>
 	);
 }
-
-Edit.defaultProps = {
-	restreamer: null,
-};

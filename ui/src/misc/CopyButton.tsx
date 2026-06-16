@@ -11,7 +11,7 @@ import NotifyContext from '../contexts/Notify';
 export default function CopyButton(props) {
 	const notify = useContext(NotifyContext);
 	const { i18n } = useLingui();
-	const { children, value, ...other } = props;
+	const { children, value = '', ...other } = props;
 
 	const handleCopy = async () => {
 		const success = await CopyToClipboard(value);
@@ -37,7 +37,3 @@ export default function CopyButton(props) {
 		</Button>
 	);
 }
-
-CopyButton.defaultProps = {
-	value: '',
-};

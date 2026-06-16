@@ -13,11 +13,12 @@ import Video from '../coders/settings/Video';
 import Audio from '../coders/settings/Audio';
 
 const Stream = function (props) {
+    const { stream = {}, onChange = () => {} } = props;
 	const handleChange = (what) => (event) => {
 		const value = event.target.value;
 
 		const stream = {
-			...props.stream,
+			...stream,
 		};
 
 		if (what === 'type') {
@@ -51,7 +52,7 @@ const Stream = function (props) {
 			stream[what] = value;
 		}
 
-		props.onChange(stream);
+		onChange(stream);
 	};
 
 	return (
@@ -62,12 +63,12 @@ const Stream = function (props) {
 					<MenuItem value="video">Video</MenuItem>
 				</Select>
 			</Grid> */}
-			{props.stream.type === 'audio' ? (
+			{stream.type === 'audio' ? (
 				<React.Fragment>
 					<Grid item xs={12}>
 						<Select
 							label={<Trans>Codec</Trans>}
-							value={props.stream.codec}
+							value={stream.codec}
 							onChange={handleChange('codec')}
 						>
 							<MenuItem value="aac">AAC</MenuItem>
@@ -76,14 +77,14 @@ const Stream = function (props) {
 					</Grid>
 					<Grid item xs={12}>
 						<Audio.Sampling
-							value={props.stream.sampling_hz}
+							value={stream.sampling_hz}
 							onChange={handleChange('sampling_hz')}
 							allowCustom
 						/>
 					</Grid>
 					<Grid item xs={12}>
 						<Audio.Layout
-							value={props.stream.layout}
+							value={stream.layout}
 							onChange={handleChange('layout')}
 							allowCustom
 						/>
@@ -94,7 +95,7 @@ const Stream = function (props) {
 					<Grid item xs={12}>
 						<Select
 							label={<Trans>Codec</Trans>}
-							value={props.stream.codec}
+							value={stream.codec}
 							onChange={handleChange('codec')}
 						>
 							<MenuItem value="h264">H264</MenuItem>
@@ -107,7 +108,7 @@ const Stream = function (props) {
 					<Grid item xs={12}>
 						<Video.Size
 							value={
-								props.stream.width + 'x' + props.stream.height
+								stream.width + 'x' + stream.height
 							}
 							onChange={handleChange('size')}
 							allowCustom
@@ -115,7 +116,7 @@ const Stream = function (props) {
 					</Grid>
 					<Grid item xs={12}>
 						<Video.PixFormat
-							value={props.stream.pix_fmt}
+							value={stream.pix_fmt}
 							onChange={handleChange('pix_fmt')}
 							allowCustom
 						/>
@@ -125,26 +126,21 @@ const Stream = function (props) {
 		</Grid>
 	);
 };
-
-Stream.defaultProps = {
-	stream: {},
-	onChange: () => {},
-};
-
 const Streams = function (props) {
+    const { streams = [], type = '', onChange = () => {} } = props;
 	const handleChange = (index) => (stream) => {
-		const streams = props.streams.slice();
+		const streams = streams.slice();
 
 		streams[index] = stream;
 
-		props.onChange(streams);
+		onChange(streams);
 	};
 
 	const handleAddStream = () => {
-		const streams = props.streams.slice();
+		const streams = streams.slice();
 
 		streams.push({
-			index: props.type === 'video' ? 0 : 1,
+			index: type === 'video' ? 0 : 1,
 			stream: streams.length,
 			type: 'audio',
 			codec: 'aac',
@@ -155,18 +151,18 @@ const Streams = function (props) {
 			channels: 2,
 		});
 
-		props.onChange(streams);
+		onChange(streams);
 	};
 
 	const handleRemoveStream = (index) => () => {
-		const streams = props.streams.toSpliced(index, 1);
+		const streams = streams.toSpliced(index, 1);
 
-		props.onChange(streams);
+		onChange(streams);
 	};
 
 	return (
 		<Grid container spacing={1}>
-			{props.streams.map((stream, index) => (
+			{streams.map((stream, index) => (
 				<Grid key={stream.index + ':' + stream.stream} item xs={12}>
 					<Stack>
 						<Typography
@@ -182,7 +178,7 @@ const Streams = function (props) {
 				</Grid>
 			))}
 			<Grid item xs={12}>
-				{props.streams.length < 2 && (
+				{streams.length < 2 && (
 					<Button
 						variant="outlined"
 						color="default"
@@ -191,7 +187,7 @@ const Streams = function (props) {
 						<Trans>Add Audio</Trans>
 					</Button>
 				)}
-				{props.streams.length === 2 && (
+				{streams.length === 2 && (
 					<Button
 						variant="outlined"
 						color="secondary"
@@ -204,24 +200,18 @@ const Streams = function (props) {
 		</Grid>
 	);
 };
-
-Streams.defaultProps = {
-	streams: [],
-	type: '',
-	onChange: () => {},
-};
-
 const Component = function (props) {
+    const { open = false, title = '', streams = [], type = '', onClose = null, onDone = () => {}, onHelp = null } = props;
 	return (
 		<Dialog
-			open={props.open}
-			onClose={props.onClose}
-			title={props.title}
+			open={open}
+			onClose={onClose}
+			title={title}
 			buttonsLeft={
 				<Button
 					variant="outlined"
 					color="secondary"
-					onClick={props.onClose}
+					onClick={onClose}
 				>
 					<Trans>Close</Trans>
 				</Button>
@@ -230,15 +220,15 @@ const Component = function (props) {
 				<Button
 					variant="outlined"
 					color="default"
-					onClick={props.onDone}
+					onClick={onDone}
 				>
 					<Trans>Save</Trans>
 				</Button>
 			}
 		>
 			<Streams
-				type={props.type}
-				streams={props.streams}
+				type={type}
+				streams={streams}
 				onChange={props.onChange}
 			/>
 		</Dialog>
@@ -246,13 +236,3 @@ const Component = function (props) {
 };
 
 export default Component;
-
-Component.defaultProps = {
-	open: false,
-	title: '',
-	streams: [],
-	type: '',
-	onClose: null,
-	onDone: () => {},
-	onHelp: null,
-};

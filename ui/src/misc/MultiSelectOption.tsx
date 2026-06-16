@@ -21,25 +21,19 @@ const Component = React.forwardRef<HTMLLIElement, ComponentProps>(
 	(props, ref) => {
 		const classes = useStyles();
 
-		const { name, value, selected, ...other } = props;
+		const { name = '', value = '', selected = false, ...other } = props;
 
 		return (
 			<MenuItem
-				value={props.value}
-				className={props.selected ? classes.root : ''}
+				value={value}
+				className={selected ? classes.root : ''}
 				ref={ref}
 				{...other}
 			>
-				{props.name}
+				{name}
 			</MenuItem>
 		);
 	},
 );
 
 export default Component;
-
-Component.defaultProps = {
-	name: '',
-	value: '',
-	selected: false,
-};

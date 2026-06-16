@@ -27,15 +27,9 @@ const createInputs = (settings) => {
 };
 
 function Source(props) {
+    const { knownDevices = [], settings = {}, onChange = function (settings) {}, onProbe = function (settings, inputs) {} } = props;
 	return null;
 }
-
-Source.defaultProps = {
-	knownDevices: [],
-	settings: {},
-	onChange: function (settings) {},
-	onProbe: function (settings, inputs) {},
-};
 
 function SourceIcon(props) {
 	return <Icon {...props} />;

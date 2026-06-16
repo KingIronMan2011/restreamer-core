@@ -56,18 +56,19 @@ const useStyles = makeStyles((theme) => ({
 
 const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
 	(props, ref) => {
+        const { open = false, title = '', onClose = null, onHelp = null, buttonsRight = null, buttonsLeft = null, maxWidth = -1 } = props;
 		const classes = useStyles();
 
 		const paperStyle: React.CSSProperties = {};
 
-		if (props.maxWidth > 0) {
-			paperStyle.maxWidth = props.maxWidth + 'px';
+		if (maxWidth > 0) {
+			paperStyle.maxWidth = maxWidth + 'px';
 		}
 
 		return (
 			<Modal
-				open={props.open}
-				onClose={props.onClose}
+				open={open}
+				onClose={onClose}
 				className="modal"
 				disableScrollLock
 			>
@@ -81,22 +82,22 @@ const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
 					<Grid container spacing={0}>
 						<Grid item xs={12} className={classes.modalHeader}>
 							<Typography variant="button">
-								{props.title}
+								{title}
 							</Typography>
-							{typeof props.onClose === 'function' && (
+							{typeof onClose === 'function' && (
 								<IconButton
 									color="inherit"
 									size="small"
-									onClick={props.onClose}
+									onClick={onClose}
 								>
 									<CloseIcon fontSize="small" />
 								</IconButton>
 							)}
-							{typeof props.onHelp === 'function' && (
+							{typeof onHelp === 'function' && (
 								<IconButton
 									color="inherit"
 									size="small"
-									onClick={props.onHelp}
+									onClick={onHelp}
 								>
 									<HelpIcon fontSize="small" />
 								</IconButton>
@@ -108,8 +109,8 @@ const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
 					</Grid>
 					<Grid container spacing={0}>
 						<Grid item xs={12} className={classes.modalFooter}>
-							<div>{props.buttonsRight}</div>
-							{props.buttonsLeft}
+							<div>{buttonsRight}</div>
+							{buttonsLeft}
 						</Grid>
 					</Grid>
 				</Paper>
@@ -119,13 +120,3 @@ const Component = React.forwardRef<HTMLDivElement, ComponentProps>(
 );
 
 export default Component;
-
-Component.defaultProps = {
-	open: false,
-	title: '',
-	onClose: null,
-	onHelp: null,
-	buttonsRight: null,
-	buttonsLeft: null,
-	maxWidth: -1,
-};

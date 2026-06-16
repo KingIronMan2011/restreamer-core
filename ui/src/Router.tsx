@@ -9,11 +9,12 @@ import {
 import Views from './views';
 
 export default function Router(props) {
-	if (props.restreamer === null) {
+    const { restreamer = null } = props;
+	if (restreamer === null) {
 		return null;
 	}
 
-	const channelid = props.restreamer.GetCurrentChannelID();
+	const channelid = restreamer.GetCurrentChannelID();
 
 	return (
 		<DOMRouter>
@@ -24,22 +25,22 @@ export default function Router(props) {
 				/>
 				<Route
 					path="/playersite"
-					element={<Views.Playersite restreamer={props.restreamer} />}
+					element={<Views.Playersite restreamer={restreamer} />}
 				/>
 				<Route
 					path="/settings"
-					element={<Views.Settings restreamer={props.restreamer} />}
+					element={<Views.Settings restreamer={restreamer} />}
 				/>
 				<Route
 					path="/settings/:tab"
-					element={<Views.Settings restreamer={props.restreamer} />}
+					element={<Views.Settings restreamer={restreamer} />}
 				/>
 				<Route
 					path="/:channelid"
 					element={
 						<Views.Main
 							key={channelid}
-							restreamer={props.restreamer}
+							restreamer={restreamer}
 						/>
 					}
 				/>
@@ -48,7 +49,7 @@ export default function Router(props) {
 					element={
 						<Views.Edit
 							key={channelid}
-							restreamer={props.restreamer}
+							restreamer={restreamer}
 						/>
 					}
 				/>
@@ -57,7 +58,7 @@ export default function Router(props) {
 					element={
 						<Views.Wizard
 							key={channelid}
-							restreamer={props.restreamer}
+							restreamer={restreamer}
 						/>
 					}
 				/>
@@ -66,7 +67,7 @@ export default function Router(props) {
 					element={
 						<Views.Edit
 							key={channelid}
-							restreamer={props.restreamer}
+							restreamer={restreamer}
 						/>
 					}
 				/>
@@ -75,7 +76,7 @@ export default function Router(props) {
 					element={
 						<Views.AddService
 							key={channelid}
-							restreamer={props.restreamer}
+							restreamer={restreamer}
 						/>
 					}
 				/>
@@ -84,7 +85,7 @@ export default function Router(props) {
 					element={
 						<Views.EditPlayer
 							key={channelid}
-							restreamer={props.restreamer}
+							restreamer={restreamer}
 						/>
 					}
 				/>
@@ -93,7 +94,7 @@ export default function Router(props) {
 					element={
 						<Views.EditService
 							key={channelid}
-							restreamer={props.restreamer}
+							restreamer={restreamer}
 						/>
 					}
 				/>
@@ -102,7 +103,3 @@ export default function Router(props) {
 		</DOMRouter>
 	);
 }
-
-Router.defaultProps = {
-	restreamer: null,
-};

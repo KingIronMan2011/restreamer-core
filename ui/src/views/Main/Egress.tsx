@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Egress(props) {
+    const { service = '', name: _name = '', state = 'disconnected', order = 'stop', reconnect = true, onEdit = function () {}, onOrder = function (order) {} } = props;
 	const classes = useStyles();
 	const [$order, setOrder] = React.useState('stop');
 
@@ -72,7 +73,7 @@ export default function Egress(props) {
 	}, []);
 
 	const update = async () => {
-		setOrder(props.order);
+		setOrder(order);
 	};
 
 	const handleSwitch = async (event) => {
@@ -87,7 +88,7 @@ export default function Egress(props) {
 			onOrder = 'restart';
 		}
 
-		const res = await props.onOrder(onOrder);
+		const res = await onOrder(onOrder);
 
 		if (res === false) {
 			setOrder(order === 'start' ? 'stop' : 'start');
@@ -97,32 +98,32 @@ export default function Egress(props) {
 	let name = <Trans>Unknown</Trans>;
 	let icon = <DeviceUnknownIcon />;
 
-	if (props.service === 'player') {
+	if (service === 'player') {
 		name = <Trans>Player</Trans>;
 		icon = <OndemandVideoIcon className="player-icon" />;
 	} else {
-		const s = Services.Get(props.service);
+		const s = Services.Get(service);
 		if (s !== null) {
 			const Icon = s.icon;
 
 			name = s.name;
-			if (props.name && props.name.length !== 0) {
-				name = props.name;
+			if (_name && _name.length !== 0) {
+				name = _name;
 			}
 
 			icon = <Icon />;
 		}
 	}
 
-	let checked = props.order === 'start' ? true : false;
-	if (props.reconnect === false) {
-		if (props.state === 'error' || props.state === 'disconnected') {
+	let checked = order === 'start' ? true : false;
+	if (reconnect === false) {
+		if (state === 'error' || state === 'disconnected') {
 			checked = false;
 		}
 	}
 
 	let color = 'secondary';
-	switch (props.state) {
+	switch (state) {
 		case 'disconnecting':
 		case 'connecting':
 			color = 'warning';
@@ -157,10 +158,10 @@ export default function Egress(props) {
 						<Typography className="egress-name">{name}</Typography>
 					</Stack>
 					<Stack direction="row" alignItems="center" spacing={0}>
-						{props.service !== 'player' && (
+						{service !== 'player' && (
 							<Switch
 								checked={checked}
-								disabled={props.order !== $order}
+								disabled={order !== $order}
 								onChange={handleSwitch}
 								color={color}
 								size="small"
@@ -170,7 +171,7 @@ export default function Egress(props) {
 						<IconButton
 							size="small"
 							className="egress-right-edit"
-							onClick={props.onEdit}
+							onClick={onEdit}
 						>
 							<EditIcon />
 						</IconButton>
@@ -180,13 +181,3 @@ export default function Egress(props) {
 		</Grid>
 	);
 }
-
-Egress.defaultProps = {
-	service: '',
-	name: '',
-	state: 'disconnected',
-	order: 'stop',
-	reconnect: true,
-	onEdit: function () {},
-	onOrder: function (order) {},
-};

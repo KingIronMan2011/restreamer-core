@@ -8,6 +8,7 @@ import Select from '../../../misc/Select';
 import SelectCustom from '../../../misc/SelectCustom';
 
 function Bitrate(props) {
+    const { allowAuto = false, allowCustom = false, variant = 'outlined', label = <Trans>Bitrate</Trans>, customLabel = <Trans>Custom bitrate (kbit/s)</Trans>, onChange = function (event) {} } = props;
 	const { i18n } = useLingui();
 	const bitrates = [
 		{ value: '32768', label: '32768 kbit/s' },
@@ -23,37 +24,29 @@ function Bitrate(props) {
 		{ value: '256', label: '256 kbit/s' },
 	];
 
-	if (props.allowAuto === true) {
+	if (allowAuto === true) {
 		bitrates.unshift({ value: 'auto', label: 'auto' });
 	}
 
-	if (props.allowCustom === true) {
+	if (allowCustom === true) {
 		bitrates.push({ value: 'custom', label: i18n._(t`Custom ...`) });
 	}
 
 	return (
 		<SelectCustom
 			options={bitrates}
-			label={props.label}
-			customLabel={props.customLabel}
+			label={label}
+			customLabel={customLabel}
 			value={props.value}
-			onChange={props.onChange}
-			variant={props.variant}
-			allowCustom={props.allowCustom}
+			onChange={onChange}
+			variant={variant}
+			allowCustom={allowCustom}
 		/>
 	);
 }
 
-Bitrate.defaultProps = {
-	allowAuto: false,
-	allowCustom: false,
-	variant: 'outlined',
-	label: <Trans>Bitrate</Trans>,
-	customLabel: <Trans>Custom bitrate (kbit/s)</Trans>,
-	onChange: function (event) {},
-};
-
 function GOP(props) {
+    const { allowAuto = false, allowCustom = false, variant = 'outlined', label = <Trans>Keyframe interval (seconds)</Trans>, customLabel = <Trans>Custom keyframe interval</Trans>, onChange = function (event) {} } = props;
 	const { i18n } = useLingui();
 	const bitrates = [
 		{ value: '1', label: '1' },
@@ -62,37 +55,29 @@ function GOP(props) {
 		{ value: '10', label: '10' },
 	];
 
-	if (props.allowAuto === true) {
+	if (allowAuto === true) {
 		bitrates.unshift({ value: 'auto', label: 'auto' });
 	}
 
-	if (props.allowCustom === true) {
+	if (allowCustom === true) {
 		bitrates.push({ value: 'custom', label: i18n._(t`Custom ...`) });
 	}
 
 	return (
 		<SelectCustom
 			options={bitrates}
-			label={props.label}
-			customLabel={props.customLabel}
+			label={label}
+			customLabel={customLabel}
 			value={props.value}
-			onChange={props.onChange}
-			variant={props.variant}
-			allowCustom={props.allowCustom}
+			onChange={onChange}
+			variant={variant}
+			allowCustom={allowCustom}
 		/>
 	);
 }
 
-GOP.defaultProps = {
-	allowAuto: false,
-	allowCustom: false,
-	variant: 'outlined',
-	label: <Trans>Keyframe interval (seconds)</Trans>,
-	customLabel: <Trans>Custom keyframe interval</Trans>,
-	onChange: function (event) {},
-};
-
 function Framerate(props) {
+    const { allowAuto = false, allowCustom = false, variant = 'outlined', label = <Trans>Framerate</Trans>, customLabel = <Trans>Custom framerate</Trans>, onChange = function (event) {} } = props;
 	const { i18n } = useLingui();
 	const sizes = [
 		{ value: '60', label: '60' },
@@ -107,42 +92,34 @@ function Framerate(props) {
 		{ value: '10', label: '10' },
 	];
 
-	if (props.allowAuto === true) {
+	if (allowAuto === true) {
 		sizes.unshift({ value: 'auto', label: 'auto' });
 	}
 
-	if (props.allowCustom === true) {
+	if (allowCustom === true) {
 		sizes.push({ value: 'custom', label: i18n._(t`Custom ...`) });
 	}
 
 	return (
 		<SelectCustom
 			options={sizes}
-			label={props.label}
-			customLabel={props.customLabel}
+			label={label}
+			customLabel={customLabel}
 			value={props.value}
-			onChange={props.onChange}
-			variant={props.variant}
-			allowCustom={props.allowCustom}
+			onChange={onChange}
+			variant={variant}
+			allowCustom={allowCustom}
 		/>
 	);
 }
 
-Framerate.defaultProps = {
-	allowAuto: false,
-	allowCustom: false,
-	variant: 'outlined',
-	label: <Trans>Framerate</Trans>,
-	customLabel: <Trans>Custom framerate</Trans>,
-	onChange: function (event) {},
-};
-
 function Profile(props) {
+    const { value = '', onChange = function (event) {} } = props;
 	return (
 		<Select
 			label={<Trans>Profile</Trans>}
-			value={props.value}
-			onChange={props.onChange}
+			value={value}
+			onChange={onChange}
 		>
 			<MenuItem value="auto">auto</MenuItem>
 			<MenuItem value="baseline">baseline</MenuItem>
@@ -152,13 +129,9 @@ function Profile(props) {
 	);
 }
 
-Profile.defaultProps = {
-	value: '',
-	onChange: function (event) {},
-};
-
 // https://en.wikipedia.org/wiki/Graphics_display_resolution
 function Size(props) {
+    const { allowAuto = false, allowCustom = false, variant = 'outlined', label = <Trans>Size</Trans>, customLabel = <Trans>Custom size</Trans>, onChange = function (event) {} } = props;
 	const { i18n } = useLingui();
 	const sizes = [
 		{ value: '7680x4320', label: '7680x4320 (8K UHD)' },
@@ -177,37 +150,29 @@ function Size(props) {
 		{ value: '640x360', label: '640x360 (nHD)' },
 	];
 
-	if (props.allowAuto === true) {
+	if (allowAuto === true) {
 		sizes.unshift({ value: 'auto', label: 'auto' });
 	}
 
-	if (props.allowCustom === true) {
+	if (allowCustom === true) {
 		sizes.push({ value: 'custom', label: i18n._(t`Custom ...`) });
 	}
 
 	return (
 		<SelectCustom
 			options={sizes}
-			label={props.label}
-			customLabel={props.customLabel}
+			label={label}
+			customLabel={customLabel}
 			value={props.value}
-			onChange={props.onChange}
-			variant={props.variant}
-			allowCustom={props.allowCustom}
+			onChange={onChange}
+			variant={variant}
+			allowCustom={allowCustom}
 		/>
 	);
 }
 
-Size.defaultProps = {
-	allowAuto: false,
-	allowCustom: false,
-	variant: 'outlined',
-	label: <Trans>Size</Trans>,
-	customLabel: <Trans>Custom size</Trans>,
-	onChange: function (event) {},
-};
-
 function Height(props) {
+    const { allowNone = false, allowCustom = false, variant = 'outlined', label = <Trans>Height</Trans>, customLabel = <Trans>Custom size</Trans>, onChange = function (event) {} } = props;
 	const { i18n } = useLingui();
 	const height = [
 		{ value: '4320', label: '4320' },
@@ -223,33 +188,25 @@ function Height(props) {
 		{ value: '360', label: '360' },
 	];
 
-	if (props.allowCustom === true) {
+	if (allowCustom === true) {
 		height.push({ value: 'custom', label: i18n._(t`Custom ...`) });
 	}
 
 	return (
 		<SelectCustom
 			options={height}
-			label={props.label}
-			customLabel={props.customLabel}
+			label={label}
+			customLabel={customLabel}
 			value={props.value}
-			onChange={props.onChange}
-			variant={props.variant}
-			allowCustom={props.allowCustom}
+			onChange={onChange}
+			variant={variant}
+			allowCustom={allowCustom}
 		/>
 	);
 }
 
-Height.defaultProps = {
-	allowNone: false,
-	allowCustom: false,
-	variant: 'outlined',
-	label: <Trans>Height</Trans>,
-	customLabel: <Trans>Custom size</Trans>,
-	onChange: function (event) {},
-};
-
 function Width(props) {
+    const { allowNone = false, allowCustom = false, variant = 'outlined', label = <Trans>Width</Trans>, customLabel = <Trans>Custom size</Trans>, onChange = function (event) {} } = props;
 	const { i18n } = useLingui();
 	const width = [
 		{ value: '7680', label: '7680' },
@@ -266,33 +223,25 @@ function Width(props) {
 		{ value: '640', label: '640' },
 	];
 
-	if (props.allowCustom === true) {
+	if (allowCustom === true) {
 		width.push({ value: 'custom', label: i18n._(t`Custom ...`) });
 	}
 
 	return (
 		<SelectCustom
 			options={width}
-			label={props.label}
-			customLabel={props.customLabel}
+			label={label}
+			customLabel={customLabel}
 			value={props.value}
-			onChange={props.onChange}
-			variant={props.variant}
-			allowCustom={props.allowCustom}
+			onChange={onChange}
+			variant={variant}
+			allowCustom={allowCustom}
 		/>
 	);
 }
 
-Width.defaultProps = {
-	allowNone: false,
-	allowCustom: false,
-	variant: 'outlined',
-	label: <Trans>Width</Trans>,
-	customLabel: <Trans>Custom size</Trans>,
-	onChange: function (event) {},
-};
-
 function Format(props) {
+    const { allowAuto = false, allowCustom = false, variant = 'outlined', label = <Trans>Format</Trans>, customLabel = <Trans>Custom format</Trans>, onChange = function (event) {} } = props;
 	const { i18n } = useLingui();
 	const sizes = [
 		{ value: 'yuv420p', label: 'yuv420p' },
@@ -301,79 +250,63 @@ function Format(props) {
 		{ value: 'mjpeg', label: 'MJPEG' },
 	];
 
-	if (props.allowAuto === true) {
+	if (allowAuto === true) {
 		sizes.unshift({ value: 'auto', label: 'auto' });
 	}
 
-	if (props.allowCustom === true) {
+	if (allowCustom === true) {
 		sizes.push({ value: 'custom', label: i18n._(t`Custom ...`) });
 	}
 
 	return (
 		<SelectCustom
 			options={sizes}
-			label={props.label}
-			customLabel={props.customLabel}
+			label={label}
+			customLabel={customLabel}
 			value={props.value}
-			onChange={props.onChange}
-			variant={props.variant}
-			allowCustom={props.allowCustom}
+			onChange={onChange}
+			variant={variant}
+			allowCustom={allowCustom}
 		/>
 	);
 }
 
-Format.defaultProps = {
-	allowAuto: false,
-	allowCustom: false,
-	variant: 'outlined',
-	label: <Trans>Format</Trans>,
-	customLabel: <Trans>Custom format</Trans>,
-	onChange: function (event) {},
-};
-
 function PixFormat(props) {
+    const { allowAuto = false, allowCustom = false, variant = 'outlined', label = <Trans>Pixel Format</Trans>, customLabel = <Trans>Custom format</Trans>, onChange = function (event) {} } = props;
 	const { i18n } = useLingui();
 	const sizes = [
 		{ value: 'yuv420p', label: 'yuv420p' },
 		{ value: 'nv12', label: 'nv12' },
 	];
 
-	if (props.allowAuto === true) {
+	if (allowAuto === true) {
 		sizes.unshift({ value: 'auto', label: 'auto' });
 	}
 
-	if (props.allowCustom === true) {
+	if (allowCustom === true) {
 		sizes.push({ value: 'custom', label: i18n._(t`Custom ...`) });
 	}
 
 	return (
 		<SelectCustom
 			options={sizes}
-			label={props.label}
-			customLabel={props.customLabel}
+			label={label}
+			customLabel={customLabel}
 			value={props.value}
-			onChange={props.onChange}
-			variant={props.variant}
-			allowCustom={props.allowCustom}
+			onChange={onChange}
+			variant={variant}
+			allowCustom={allowCustom}
 		/>
 	);
 }
 
-PixFormat.defaultProps = {
-	allowAuto: false,
-	allowCustom: false,
-	variant: 'outlined',
-	label: <Trans>Pixel Format</Trans>,
-	customLabel: <Trans>Custom format</Trans>,
-	onChange: function (event) {},
-};
-
 function FpsMode(props) {
+    const { value = '', onChange = function (event) {} } = props;
 	return (
 		<Select
 			label={<Trans>Framerate mode</Trans>}
-			value={props.value}
-			onChange={props.onChange}
+			value={value}
+			onChange={onChange}
 		>
 			<MenuItem value="passthrough">
 				<Trans>Frame is passed through (Passthrough)</Trans>
@@ -390,11 +323,6 @@ function FpsMode(props) {
 		</Select>
 	);
 }
-
-FpsMode.defaultProps = {
-	value: '',
-	onChange: function (event) {},
-};
 
 export default {
 	Bitrate,
