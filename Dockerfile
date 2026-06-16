@@ -30,6 +30,7 @@ COPY --from=core /src/import /core/bin/import
 COPY --from=core /src/ffmigrate /core/bin/ffmigrate
 COPY --from=core /src/mime.types /core/mime.types
 COPY run.sh /core/bin/run.sh
+RUN sed -i 's/\r$//' /core/bin/run.sh
 
 RUN mkdir -p /core/config /core/data && ffmpeg -buildconf
 
