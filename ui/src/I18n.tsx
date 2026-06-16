@@ -143,22 +143,25 @@ function serializeChild(
 	return `{${index}}`;
 }
 
-i18next.use(LanguageDetector).use(initReactI18next).init({
-	resources,
-	fallbackLng: 'en',
-	supportedLngs: [...supportedLanguages],
-	detection: {
-		order: ['localStorage', 'navigator'],
-		caches: ['localStorage'],
-		lookupLocalStorage: '@@restreamer-ui@@language',
-		convertDetectedLanguage: normalizeLanguage,
-	},
-	interpolation: {
-		escapeValue: false,
-		prefix: '{',
-		suffix: '}',
-	},
-});
+i18next
+	.use(LanguageDetector)
+	.use(initReactI18next)
+	.init({
+		resources,
+		fallbackLng: 'en',
+		supportedLngs: [...supportedLanguages],
+		detection: {
+			order: ['localStorage', 'navigator'],
+			caches: ['localStorage'],
+			lookupLocalStorage: '@@restreamer-ui@@language',
+			convertDetectedLanguage: normalizeLanguage,
+		},
+		interpolation: {
+			escapeValue: false,
+			prefix: '{',
+			suffix: '}',
+		},
+	});
 
 export const i18n = {
 	get locale() {

@@ -5,8 +5,9 @@ ARG NODE_IMAGE=node:24-alpine
 # 1) Build the web UI.
 FROM $NODE_IMAGE AS ui
 WORKDIR /ui
+ENV CI=true
 RUN npm install -g pnpm
-COPY ui/package.json ui/pnpm-lock.yaml ./
+COPY ui/package.json ui/pnpm-lock.yaml ui/pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY ui/ ./
 RUN pnpm build
